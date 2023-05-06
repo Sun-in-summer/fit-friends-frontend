@@ -10,9 +10,9 @@ function IntroScreen(): JSX.Element {
             </picture>
           </div>
           <div className="intro__wrapper">
-            <img className="intro__icon" width="60" height="60" aria-hidden="true" srcSet='img/sprite/icon-logotype.svg'>
-
-            </img>
+            <svg className="intro__icon" width="60" height="60" aria-hidden="true">
+              <use xlinkHref="/sprites.svg#icon-logotype"></use>
+            </svg>
             <div className="intro__title-logo">
               <picture>
                 <source type="image/webp" srcSet="img/content/sitemap//title-logo.webp, img/content/sitemap//title-logo@2x.webp 2x"/><img src="img/content/sitemap//title-logo.png" srcSet="img/content/sitemap//title-logo@2x.png 2x" width="934" height="455" alt="Логотип Fit Friends"/>

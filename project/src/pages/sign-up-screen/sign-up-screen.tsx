@@ -3,8 +3,12 @@ function SignUpScreen(): JSX.Element {
     <div className="wrapper">
       <main>
         <div className="background-logo">
-          <img className="background-logo__logo" width="750" height="284" aria-hidden="true" srcSet='img/sprite/logo-big.svg'></img>
-          <img className="background-logo__icon" width="343" height="343" aria-hidden="true" srcSet='img/sprite/icon-logotype.svg'></img>
+          <svg className="background-logo__logo" width="750" height="284" aria-hidden="true">
+            <use xlinkHref="/sprites.svg#logo-big"></use>
+          </svg>
+          <svg className="background-logo__icon" width="343" height="343" aria-hidden="true">
+            <use xlinkHref="/sprites.svg#icon-logotype"></use>
+          </svg>
         </div>
         <div className="popup-form popup-form--sign-up">
           <div className="popup-form__wrapper">

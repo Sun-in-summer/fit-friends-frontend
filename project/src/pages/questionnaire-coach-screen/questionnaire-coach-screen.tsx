@@ -1,11 +1,18 @@
+import QuestionnaireLevelBlock from '../../components/questionnaire-level-block/questionnaire-level-block';
+import QuestionnaireSpecializationBlock from '../../components/questionnaire-specialization-block/questionaire-specialization-block';
+
 function QuestionnaireCoachScreen(): JSX.Element {
   return (
 
     <div className="wrapper">
       <main>
         <div className="background-logo">
-          <img className="background-logo__logo" width="750" height="284" aria-hidden="true" srcSet='img/sprite/logo-big.svg'></img>
-          <img className="background-logo__icon" width="343" height="343" aria-hidden="true" srcSet='img/sprite/icon-logotype.svg'></img>
+          <svg className="background-logo__logo" width="750" height="284" aria-hidden="true">
+            <use xlinkHref="/sprites.svg#logo-big"></use>
+          </svg>
+          <svg className="background-logo__icon" width="343" height="343" aria-hidden="true">
+            <use xlinkHref="/sprites.svg#icon-logotype"></use>
+          </svg>
         </div>
         <div className="popup-form popup-form--questionnaire-coach">
           <div className="popup-form__wrapper">
@@ -15,69 +22,8 @@ function QuestionnaireCoachScreen(): JSX.Element {
                   <div className="questionnaire-coach">
                     <h1 className="visually-hidden">Опросник</h1>
                     <div className="questionnaire-coach__wrapper">
-                      <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
-                        <div className="specialization-checkbox questionnaire-coach__specializations">
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="yoga"/><span className="btn-checkbox__btn">Йога</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="running"/><span className="btn-checkbox__btn">Бег</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="power" checked/><span className="btn-checkbox__btn">Силовые</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="aerobics"/><span className="btn-checkbox__btn">Аэробика</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="crossfit" checked/><span className="btn-checkbox__btn">Кроссфит</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="boxing" checked/><span className="btn-checkbox__btn">Бокс</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="pilates"/><span className="btn-checkbox__btn">Пилатес</span>
-                            </label>
-                          </div>
-                          <div className="btn-checkbox">
-                            <label>
-                              <input className="visually-hidden" type="checkbox" name="specialisation" value="stretching"/><span className="btn-checkbox__btn">Стрейчинг</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваш уровень</span>
-                        <div className="custom-toggle-radio custom-toggle-radio--big questionnaire-coach__radio">
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="level"/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Новичок</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="level" checked/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Любитель</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="level"/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Профессионал</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
+                      <QuestionnaireSpecializationBlock role ='coach'/>
+                      <QuestionnaireLevelBlock role ='coach'/>
                       <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваши дипломы и сертификаты</span>
                         <div className="drag-and-drop questionnaire-coach__drag-and-drop">
                           <label>
