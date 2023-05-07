@@ -1,7 +1,12 @@
+import {Helmet} from 'react-helmet-async';
+
 function SignInScreen(): JSX.Element {
   return (
     <div className="wrapper">
       <main>
+        <Helmet>
+          <title>FitFriends. Авторизуйтесь</title>
+        </Helmet>
         <div className="background-logo">
           <svg className="background-logo__logo" width="750" height="284" aria-hidden="true">
             <use xlinkHref="/sprites.svg#logo-big"></use>

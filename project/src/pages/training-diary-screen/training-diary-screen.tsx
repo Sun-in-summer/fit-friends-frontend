@@ -1,8 +1,12 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 
 function TrainingDiaryScreen(): JSX.Element {
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Дневник тренировок</title>
+      </Helmet>
       <Header />
       <main>
         <div className="inner-page inner-page--no-sidebar">

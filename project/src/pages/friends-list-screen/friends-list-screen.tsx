@@ -1,9 +1,13 @@
+import { Helmet } from 'react-helmet-async';
 import FriendsListItem from '../../components/friends-list-item/friends-list-item';
 import Header from '../../components/header/header';
 
-function FriendsListUserScreen(): JSX.Element {
+function FriendsListScreen(): JSX.Element {
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Список друзей</title>
+      </Helmet>
       <Header />
       <main>
         <section className="friends-list">
@@ -26,15 +30,7 @@ function FriendsListUserScreen(): JSX.Element {
                 </div> */}
               </div>
               <ul className="friends-list__list">
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
-                <FriendsListItem/>
+                {Array.from({length: 8}, (_v, k)=> <FriendsListItem key={k} />)}
               </ul>
               <div className="show-more friends-list__show-more">
                 <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
@@ -49,4 +45,4 @@ function FriendsListUserScreen(): JSX.Element {
   );
 }
 
-export default FriendsListUserScreen;
+export default FriendsListScreen;

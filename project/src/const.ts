@@ -2,13 +2,13 @@ export enum AppRoute {
   Root = '/',
   Login = '/login',
   Register = '/register',
-  CoachQuestionnaire = '/coach-questionnaire',
+  CoachQuestionnaire = '/questionnaire-coach',
   CoachProfile = '/coach-profile',
   CreateTraining = '/create-training',
   CoachTrainings = '/coach-trainings',
   CoachOrders ='/coach-orders',
   MyFriends ='/my-friends',
-  UserQuestionnaire = '/user-questionnaire',
+  UserQuestionnaire = '/questionnaire-user',
   Main = '/main',
   TrainingsCatalogue = '/trainings',
   Training = '/trainings/:id',
@@ -22,4 +22,11 @@ export enum AppRoute {
   GymLocation = '/gyms/location/:id',
   UsersCatalogue = '/users',
   User = '/user/:id'
+}
+
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }

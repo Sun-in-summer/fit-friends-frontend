@@ -1,8 +1,12 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 
 function MyPurchasesScreen(): JSX.Element {
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Мои заказы</title>
+      </Helmet>
       <Header />
       <main>
         <section className="my-orders">

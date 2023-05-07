@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import Logo from '../logo/logo';
 
 
 function Header(): JSX.Element {
@@ -6,19 +8,15 @@ function Header(): JSX.Element {
 
     <header className="header">
       <div className="container">
-        <a className="header__logo" href="index.html" aria-label="Переход на главную">
-          <svg width="187" height="70" aria-hidden="true">
-            <use xlinkHref="/sprites.svg#logo"></use>
-          </svg>
-        </a>
+        <Logo />
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
-              <a className="main-nav__link is-active" href="#" aria-label="На главную">
+              <Link className="main-nav__link is-active" to="/" aria-label="На главную">
                 <svg width="18" height="18" aria-hidden="true">
                   <use xlinkHref="/sprites.svg#icon-home"></use>
                 </svg>
-              </a>
+              </Link>
             </li>
             <li className="main-nav__item">
               <a className="main-nav__link" href="#" aria-label="Личный кабинет">

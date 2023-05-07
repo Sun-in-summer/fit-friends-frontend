@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import GymCard from '../../components/gym-card/gym-card';
 import Header from '../../components/header/header';
 
@@ -8,6 +9,9 @@ type MyGymsScreenProps ={
 function MyGymsScreen({myGymsGymsQty}: MyGymsScreenProps): JSX.Element {
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Мои спортзалы</title>
+      </Helmet>
       <Header />
       <main>
         <section className="my-gyms">

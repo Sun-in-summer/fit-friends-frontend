@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import QuestionnaireLevelBlock from '../../components/questionnaire-level-block/questionnaire-level-block';
 import QuestionnaireSpecializationBlock from '../../components/questionnaire-specialization-block/questionaire-specialization-block';
 
@@ -6,6 +7,9 @@ function QuestionnaireCoachScreen(): JSX.Element {
 
     <div className="wrapper">
       <main>
+        <Helmet>
+          <title>FitFriends. Добро пожаловать!</title>
+        </Helmet>
         <div className="background-logo">
           <svg className="background-logo__logo" width="750" height="284" aria-hidden="true">
             <use xlinkHref="/sprites.svg#logo-big"></use>

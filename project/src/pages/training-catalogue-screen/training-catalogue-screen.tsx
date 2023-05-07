@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import TrainingCard from '../../components/training-card/training-card';
 
@@ -8,7 +9,10 @@ type TrainingCatalogueScreenProps ={
 function TrainingCatalogueScreen({trainingCatalogueTrainingsQty}: TrainingCatalogueScreenProps): JSX.Element {
   return (
     <div className="wrapper">
-      <Header></Header>
+      <Helmet>
+        <title>FitFriends. Каталог тренировок</title>
+      </Helmet>
+      <Header/>
       <main>
         <section className="inner-page">
           <div className="container">

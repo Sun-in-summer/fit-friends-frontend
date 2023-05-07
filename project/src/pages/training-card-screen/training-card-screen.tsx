@@ -1,12 +1,92 @@
+import { Fragment } from 'react';
 import Header from '../../components/header/header';
 import ReviewCard from '../../components/review-card/review-card';
 
-type TrainingCardUserScreenProps = {
+type TrainingCardScreenProps ={
   trainingsScreenReviewsQty: number;
+  role: string;
 }
 
-function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScreenProps ): JSX.Element{
+function TrainingCardScreen({trainingsScreenReviewsQty, role}: TrainingCardScreenProps ): JSX.Element{
+
+
+  const discountOrBuyButton = (userRole: string) => {
+    if ( userRole === 'coach') {
+      return (
+        <button className="btn-flat btn-flat--light btn-flat--underlined training-info__discount" type="button">
+          <svg width="14" height="14" aria-hidden="true">
+            <use xlinkHref="#icon-discount"></use>
+          </svg><span>Сделать скидку 10%</span>
+        </button>
+      );
+    }
+    return (
+      <button className="btn training-info__buy" type="button">Купить</button>
+    );
+  };
+
+  const isDicountOrBuyButton = discountOrBuyButton(role);
+
+
+  const toDropVideo = (userRole: string) => {
+    if (userRole === 'coach') {
+      return (
+        <div className="training-video__drop-files">
+          <form action="#" method="post">
+            <div className="training-video__form-wrapper">
+              <div className="drag-and-drop">
+                <label>
+                  <span className="drag-and-drop__label" tabIndex={0}>Загрузите сюда файлы формата MOV, AVI или MP4
+                    <svg width="20" height="20" aria-hidden="true">
+                      <use xlinkHref="#icon-import-video"></use>
+                    </svg>
+                  </span>
+                  <input type="file" name="import" tabIndex={-1} accept=".mov, .avi, .mp4"/>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const isDropFileSection = toDropVideo(role);
+
+
+  const toSaveDeleteButton = (userRole: string) =>{
+    if (userRole === 'coach') {
+      return (
+        <div className="training-video__edit-buttons">
+          <button className="btn" type="button">Сохранить</button>
+          <button className="btn btn--outlined" type="button">Удалить</button>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  const isSaveDeleteButtonForCoach = toSaveDeleteButton(role);
+
+  const toStartStopTrainingButton = (userRole: string) => {
+    if (userRole === 'coach') {
+      return null;
+    }
+    return (
+      <Fragment>
+        <button className="btn training-video__button training-video__button--start" type="button" disabled>Приступить</button>
+        <button className="btn training-video__button training-video__button--stop" type="button">Закончить</button>
+      </Fragment>
+    );
+  };
+
+  const isStartStopTrainingButton = toStartStopTrainingButton(role);
+
+
   return(
+
     <div className="wrapper">
       <Header />
       <main>
@@ -24,9 +104,9 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                 <ul className="reviews-side-bar__list">
                   {Array.from({length: trainingsScreenReviewsQty }, (_v, k) => <ReviewCard key={k} /> )}
                 </ul>
-                <button className="btn btn--medium reviews-side-bar__button" type="button">Оставить отзыв</button>
+                <button className="btn btn--medium reviews-side-bar__button" type="button" disabled= {role === 'coach'}>Оставить отзыв</button>
               </aside>
-              <div className="training-card">
+              <div className="training-card training-card--edit">
                 <div className="training-info">
                   <h2 className="visually-hidden">Информация о тренировке</h2>
                   <div className="training-info__header">
@@ -38,6 +118,16 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                       </div>
                       <div className="training-info__coach-info"><span className="training-info__label">Тренер</span><span className="training-info__name">Валерия</span></div>
                     </div>
+                    <button className="btn-flat btn-flat--light training-info__edit training-info__edit--edit" type="button">
+                      <svg width="12" height="12" aria-hidden="true">
+                        <use xlinkHref="#icon-edit"></use>
+                      </svg><span>Редактировать</span>
+                    </button>
+                    <button className="btn-flat btn-flat--light btn-flat--underlined training-info__edit training-info__edit--save" type="button">
+                      <svg width="12" height="12" aria-hidden="true">
+                        <use xlinkHref="#icon-edit"></use>
+                      </svg><span>Сохранить</span>
+                    </button>
                   </div>
                   <div className="training-info__main-content">
                     <form action="#" method="get">
@@ -45,13 +135,13 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                         <div className="training-info__info-wrapper">
                           <div className="training-info__input training-info__input--training">
                             <label><span className="training-info__label">Название тренировки</span>
-                              <input type="text" name="training" value="energy" disabled/>
+                              <input type="text" name="training" value="energy"/>
                             </label>
                             <div className="training-info__error">Обязательное поле</div>
                           </div>
                           <div className="training-info__textarea">
                             <label><span className="training-info__label">Описание тренировки</span>
-                              <textarea name="description" disabled>Упражнения укрепляют мышечный корсет, делают суставы более гибкими, улучшают осанку и&nbsp;координацию.</textarea>
+                              <textarea name="description">Упражнения укрепляют мышечный корсет, делают суставы более гибкими, улучшают осанку и&nbsp;координацию.</textarea>
                             </label>
                           </div>
                         </div>
@@ -63,7 +153,7 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                                   <use xlinkHref="#icon-star"></use>
                                 </svg>
                               </span>
-                              <input type="number" name="rating" value="4" disabled/>
+                              <input type="number" name="rating" value="4"/>
                             </label>
                           </div>
                           <ul className="training-info__list">
@@ -84,11 +174,11 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                         <div className="training-info__price-wrapper">
                           <div className="training-info__input training-info__input--price">
                             <label><span className="training-info__label">Стоимость</span>
-                              <input type="text" name="price" value="800 ₽" disabled/>
+                              <input type="text" name="price" value="800 ₽"/>
                             </label>
                             <div className="training-info__error">Введите число</div>
                           </div>
-                          <button className="btn training-info__buy" type="button">Купить</button>
+                          {isDicountOrBuyButton}
                         </div>
                       </div>
                     </form>
@@ -108,9 +198,10 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
                       </svg>
                     </button>
                   </div>
+                  {isDropFileSection}
                   <div className="training-video__buttons-wrapper">
-                    <button className="btn training-video__button training-video__button--start" type="button" disabled>Приступить</button>
-                    <button className="btn training-video__button training-video__button--stop" type="button">Закончить</button>
+                    {isStartStopTrainingButton}
+                    {isSaveDeleteButtonForCoach}
                   </div>
                 </div>
               </div>
@@ -122,4 +213,4 @@ function TrainingCardUserScreen({trainingsScreenReviewsQty}:TrainingCardUserScre
   );
 }
 
-export default TrainingCardUserScreen;
+export default TrainingCardScreen;
