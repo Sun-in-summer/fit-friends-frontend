@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
+import { trainings } from './mocks/trainings';
+import { users } from './mocks/users';
+import { gyms } from './mocks/gyms';
+import { reviews } from './mocks/reviews';
+import {store} from './store';
+import { Provider } from 'react-redux';
 
 
 const Setting = {
@@ -13,7 +19,6 @@ const Setting = {
   UserCatalogueScreenUsersQty: 20,
   UserCardScreenTrainingsQty: 4,
   MyGymsGymsQty: 6
-
 } as const;
 
 
@@ -23,16 +28,24 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      popularTrainingsQty={Setting.PopularTrainingsQty}
-      lookForCompanyUsersQty={Setting.LookForCompanyUsersQty}
-      specialForYouItemsQty={Setting.SpecialForYouItemsQty}
-      trainingCatalogueTrainingsQty ={Setting.TrainingCatalogueTrainingsQty}
-      trainingsScreenReviewsQty= {Setting.TrainingsScreenReviewsQty}
-      gymCatalogueScreenGymsQty= {Setting.GymCatalogueScreenGymsQty}
-      userCatalogueScreenUsersQty ={Setting.UserCatalogueScreenUsersQty}
-      userCardScreenTrainingsQty = {Setting.UserCardScreenTrainingsQty}
-      myGymsGymsQty ={Setting.MyGymsGymsQty}
-    />
+    <Provider
+      store ={store}
+    >
+      <App
+        popularTrainingsQty={Setting.PopularTrainingsQty}
+        lookForCompanyUsersQty={Setting.LookForCompanyUsersQty}
+        specialForYouItemsQty={Setting.SpecialForYouItemsQty}
+        trainingCatalogueTrainingsQty ={Setting.TrainingCatalogueTrainingsQty}
+        trainingsScreenReviewsQty= {Setting.TrainingsScreenReviewsQty}
+        gymCatalogueScreenGymsQty= {Setting.GymCatalogueScreenGymsQty}
+        userCatalogueScreenUsersQty ={Setting.UserCatalogueScreenUsersQty}
+        userCardScreenTrainingsQty = {Setting.UserCardScreenTrainingsQty}
+        myGymsGymsQty ={Setting.MyGymsGymsQty}
+        trainings = {trainings}
+        users = {users}
+        gyms = {gyms}
+        reviews ={reviews}
+      />
+    </Provider>
   </React.StrictMode>,
 );

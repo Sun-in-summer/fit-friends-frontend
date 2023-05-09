@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
 function IntroScreen(): JSX.Element {
   return (
 
@@ -19,8 +22,9 @@ function IntroScreen(): JSX.Element {
               </picture>
             </div>
             <div className="intro__buttons">
-              <button className="btn intro__button" type="button">Регистрация</button>
-              <p className="intro__text">Есть аккаунт? <a className="intro__link" href="#">Вход</a>
+              <Link className="btn intro__button" type="button" to= {AppRoute.Register}>Регистрация</Link>
+              <p className="intro__text">Есть аккаунт?
+                <Link className="intro__link" to={AppRoute.Login}>Вход</Link>
               </p>
             </div>
           </div>

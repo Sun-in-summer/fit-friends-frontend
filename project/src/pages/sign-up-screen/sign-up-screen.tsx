@@ -1,6 +1,91 @@
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {Helmet} from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute, GenderNames, UserRole } from '../../const';
+import SignUpGenderBlock from '../../components/sign-up-gender-block/sign-up-gender-block';
+import LocationOptionsList from '../../components/location-options-list/location-options-list';
+import dayjs from 'dayjs';
+
+
+type DetailsProps = {
+    name: string;
+    email: string;
+    sex: string;
+    birthday: string;
+}
+
+function Details({name, email, sex, birthday}: DetailsProps) {
+
+  const convertDate = () => {
+    if (birthday !== '') {
+      return dayjs(birthday).toISOString();
+    }
+    return birthday;
+  };
+
+  const date = convertDate();
+  return (
+    <>
+      <h2>Проверка введённых данных:</h2>
+      <p>
+        <b>Имя: </b>{name}<br />
+        <b>Email: </b>{email}<br />
+        <b>Пол: </b>{sex}<br />
+        <b>ДР: </b>{date}<br />
+
+      </p>
+    </>
+  );
+}
+
 
 function SignUpScreen(): JSX.Element {
+
+  const [userRole, setUserRole] = useState(UserRole.Coach);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    birthday: '',
+    location: '',
+    password: '',
+    sex: GenderNames.Female,
+    role: userRole,
+    avatar: '',
+  });
+
+  const [isUserAgreementAccepted, setIsUserAgreementAccepted ] = useState<boolean>(true);
+
+
+  const navigate = useNavigate();
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) : void => {
+    const {target} = event;
+    const {value} = target;
+    // eslint-disable-next-line no-console
+    console.log(value);
+    setUserRole(value as UserRole);
+  };
+
+  const onSubmit = (evt : FormEvent<HTMLFormElement> ) => {
+    evt.preventDefault();
+    navigate(AppRoute.Questionnaire.replace('role', userRole));
+  };
+
+  const fieldChangeHandle = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> ) : void => {
+    const {target} = event;
+    const {value, name} = target;
+    // eslint-disable-next-line no-console
+    console.log(value, name);
+    setFormData({...formData, [name]: value});
+    // eslint-disable-next-line no-console
+    console.log(formData);
+  };
+
+  const acceptUserAgreementHandle = (evt: ChangeEvent<HTMLInputElement>) => {
+    setIsUserAgreementAccepted((currentState) => !currentState);
+  };
+
+
   return (
     <div className="wrapper">
       <main>
@@ -22,14 +107,19 @@ function SignUpScreen(): JSX.Element {
                 <h1 className="popup-form__title">Регистрация</h1>
               </div>
               <div className="popup-form__form">
-                <form method="get">
+                <form
+                  method="get"
+                  onSubmit = {onSubmit}
+                >
                   <div className="sign-up">
                     <div className="sign-up__load-photo">
                       <div className="input-load-avatar">
                         <label>
                           <input className="visually-hidden" type="file" accept="image/png, image/jpeg"/>
                           <span className="input-load-avatar__btn">
-                            <img width="20" height="20" aria-hidden="true" srcSet='img/sprite/icon-import.svg'></img>
+                            <svg width="20" height="20" aria-hidden="true">
+                              <use xlinkHref="/sprites.svg#icon-import"></use>
+                            </svg>
                           </span>
                         </label>
                       </div>
@@ -41,61 +131,60 @@ function SignUpScreen(): JSX.Element {
                       <div className="custom-input">
                         <label><span className="custom-input__label">Имя</span>
                           <span className="custom-input__wrapper">
-                            <input type="text" name="name"/>
+                            <input
+                              type="text"
+                              name="name"
+                              onChange ={fieldChangeHandle}
+                              value = {formData.name}
+                            />
                           </span>
                         </label>
                       </div>
                       <div className="custom-input">
                         <label><span className="custom-input__label">E-mail</span>
                           <span className="custom-input__wrapper">
-                            <input type="email" name="email"/>
+                            <input
+                              type="email"
+                              name="email"
+                              onChange ={fieldChangeHandle}
+                              value={formData.email}
+                            />
                           </span>
                         </label>
                       </div>
                       <div className="custom-input">
                         <label><span className="custom-input__label">Дата рождения</span>
                           <span className="custom-input__wrapper">
-                            <input type="date" name="birthday" max="2099-12-31"/>
+                            <input
+                              type="date"
+                              name="birthday"
+                              max="2099-12-31"
+                              onChange ={fieldChangeHandle}
+                              value = {formData.birthday}
+                            />
                           </span>
                         </label>
                       </div>
-                      <div className="custom-select custom-select--not-selected"><span className="custom-select__label">Ваша локация</span>
-                        <button className="custom-select__button" type="button" aria-label="Выберите одну из опций"><span className="custom-select__text"></span>
-                          <span className="custom-select__icon">
-                            <img width="15" height="6" aria-hidden="true" srcSet='img/sprite/arrow-down'></img>
-                          </span>
-                        </button>
-                        <ul className="custom-select__list" role="listbox">
-                        </ul>
-                      </div>
+                      <LocationOptionsList />
                       <div className="custom-input">
                         <label><span className="custom-input__label">Пароль</span>
                           <span className="custom-input__wrapper">
-                            <input type="password" name="password" autoComplete="off"/>
+                            <input
+                              type="password"
+                              name="password"
+                              autoComplete="off"
+                              onChange ={fieldChangeHandle}
+                              value={formData.password}
+                            />
                           </span>
                         </label>
                       </div>
                       <div className="sign-up__radio"><span className="sign-up__label">Пол</span>
                         <div className="custom-toggle-radio custom-toggle-radio--big">
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex"/>
-                              <span className="custom-toggle-radio__icon">
-                              </span><span className="custom-toggle-radio__label">Мужской</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex" checked /><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Женский</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex" />
-                              <span className="custom-toggle-radio__icon"></span>
-                              <span className="custom-toggle-radio__label">Неважно</span>
-                            </label>
-                          </div>
+                          <SignUpGenderBlock
+                            onChange ={fieldChangeHandle}
+                            genderValue = {formData.sex}
+                          />
                         </div>
                       </div>
                     </div>
@@ -104,18 +193,34 @@ function SignUpScreen(): JSX.Element {
                       <div className="role-selector sign-up__role-selector">
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="coach" checked />
+                            <input
+                              className="visually-hidden"
+                              type="radio"
+                              name="role"
+                              value="coach"
+                              onChange = {onChange}
+                            />
                             <span className="role-btn__icon">
-                              <img width="12" height="13" aria-hidden="true" srcSet='img/sprite/icon-cup.svg'></img>
+                              <svg width="12" height="13" aria-hidden="true">
+                                <use xlinkHref="/sprites.svg#icon-cup"></use>
+                              </svg>
                             </span>
                             <span className="role-btn__btn">Я хочу тренировать</span>
                           </label>
                         </div>
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="sportsman"/>
+                            <input
+                              className="visually-hidden"
+                              type="radio"
+                              name="role"
+                              value="user" //было sportsman
+                              onChange = {onChange}
+                            />
                             <span className="role-btn__icon" >
-                              <img width="12" height="13" aria-hidden="true" srcSet ='img/sprite/icon-weight.svg'></img>
+                              <svg width="12" height="13" aria-hidden="true">
+                                <use xlinkHref="/sprites.svg#icon-weight"></use>
+                              </svg>
                             </span><span className="role-btn__btn">Я хочу тренироваться</span>
                           </label>
                         </div>
@@ -123,9 +228,17 @@ function SignUpScreen(): JSX.Element {
                     </div>
                     <div className="sign-up__checkbox">
                       <label>
-                        <input type="checkbox" value="user-agreement" name="user-agreement" checked/>
+                        <input
+                          type="checkbox"
+                          value="user-agreement"
+                          name="user-agreement"
+                          checked={isUserAgreementAccepted}
+                          onChange ={acceptUserAgreementHandle}
+                        />
                         <span className="sign-up__checkbox-icon">
-                          <img width="9" height="6" aria-hidden="true" srcSet='img/sprite/arrow-check.svg'></img>
+                          <svg width="9" height="6" aria-hidden="true">
+                            <use xlinkHref="/sprites.svg#arrow-check"></use>
+                          </svg>
                         </span>
                         <span className="sign-up__checkbox-label">Я соглашаюсь с <span>политикой конфиденциальности</span> компании</span>
                       </label>
@@ -137,7 +250,10 @@ function SignUpScreen(): JSX.Element {
             </div>
           </div>
         </div>
+
+
       </main>
+      <Details {...formData} />
     </div>
   );
 }

@@ -10,6 +10,11 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import IndexScreen from '../../pages/index-screen/index-screen';
 import PrivateRoute from '../private-route/private-route';
 import {HelmetProvider} from 'react-helmet-async';
+import { Training } from '../../types/training.interface';
+import { ExtendedUser } from '../../types/user.interface';
+import { Review } from '../../types/review.interface';
+import { Gym } from '../../types/gym.interface';
+// import { ChangeEvent, useState } from 'react';
 
 
 type AppScreenProps = {
@@ -22,10 +27,21 @@ type AppScreenProps = {
   userCatalogueScreenUsersQty: number;
   userCardScreenTrainingsQty: number;
   myGymsGymsQty: number;
+  trainings: Training[];
+  users: ExtendedUser[];
+  reviews: Review[];
+  gyms: Gym[];
 }
 
 
-function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty, trainingCatalogueTrainingsQty, trainingsScreenReviewsQty, gymCatalogueScreenGymsQty , userCatalogueScreenUsersQty, userCardScreenTrainingsQty, myGymsGymsQty}: AppScreenProps): JSX.Element {
+function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty, trainingCatalogueTrainingsQty, trainingsScreenReviewsQty, gymCatalogueScreenGymsQty , userCatalogueScreenUsersQty, userCardScreenTrainingsQty, myGymsGymsQty,
+  trainings,
+  users,
+  gyms,
+  reviews
+}: AppScreenProps): JSX.Element {
+
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -36,7 +52,9 @@ function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty
           />
           <Route
             path={AppRoute.Register}
-            element = {<SignUpScreen />}
+            element = {
+              <SignUpScreen />
+            }
           />
           <Route
             path={AppRoute.CoachQuestionnaire}

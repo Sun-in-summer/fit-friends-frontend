@@ -1,14 +1,16 @@
 export enum AppRoute {
+  Test ='/test',
   Root = '/',
   Login = '/login',
   Register = '/register',
-  CoachQuestionnaire = '/questionnaire-coach',
+  Questionnaire = '/questionnaire/role',
+  CoachQuestionnaire = '/questionnaire/coach',
   CoachProfile = '/coach-profile',
   CreateTraining = '/create-training',
   CoachTrainings = '/coach-trainings',
   CoachOrders ='/coach-orders',
   MyFriends ='/my-friends',
-  UserQuestionnaire = '/questionnaire-user',
+  UserQuestionnaire = '/questionnaire/user',
   Main = '/main',
   TrainingsCatalogue = '/trainings',
   Training = '/trainings/:id',
@@ -30,3 +32,25 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+
+export const enum UserRole {
+  User = 'user',
+  Coach = 'coach',
+}
+
+export const GenderNames = {
+  Female: 'Женский',
+  Male: 'Мужской',
+  Unknown:'Неважно',
+};
+
+
+export const LocationTitles = {
+  Pionerskaya: 'Пионерская',
+  Petrogradskaya:  'Петроградская',
+  Udelnaya:  'Удельная',
+  Zvezdnaya:  'Звёздная',
+  Sportivnaya: 'Спортивная',
+};
+
