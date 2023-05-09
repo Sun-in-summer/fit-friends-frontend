@@ -26,6 +26,15 @@ export enum AppRoute {
   User = '/user/:id'
 }
 
+export enum APIRoute {
+  Trainings = '/trainings',
+  Users = '/users',
+  Reviews = '/reviews',
+  Login = '/login',
+  Logout = '/logout',
+
+}
+
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',

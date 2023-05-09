@@ -12,9 +12,12 @@ type DetailsProps = {
     email: string;
     sex: string;
     birthday: string;
+    password: string;
+    avatar: string;
+    file: File | undefined;
 }
 
-function Details({name, email, sex, birthday}: DetailsProps) {
+function Details({name, email, sex, birthday, password, avatar, file}: DetailsProps) {
 
   const convertDate = () => {
     if (birthday !== '') {
@@ -32,7 +35,9 @@ function Details({name, email, sex, birthday}: DetailsProps) {
         <b>Email: </b>{email}<br />
         <b>Пол: </b>{sex}<br />
         <b>ДР: </b>{date}<br />
-
+        <b>pass: </b>{password}<br />
+        <b>Аватар: </b>{avatar}<br />
+        <b>File: </b>{file?.name}<br />
       </p>
     </>
   );
@@ -50,19 +55,17 @@ function SignUpScreen(): JSX.Element {
     password: '',
     sex: GenderNames.Female,
     role: userRole,
-    avatar: '',
+    avatar: ''
   });
 
   const [isUserAgreementAccepted, setIsUserAgreementAccepted ] = useState<boolean>(true);
-
+  const [file, setFile] = useState<File>();
 
   const navigate = useNavigate();
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) : void => {
     const {target} = event;
     const {value} = target;
-    // eslint-disable-next-line no-console
-    console.log(value);
     setUserRole(value as UserRole);
   };
 
@@ -74,15 +77,17 @@ function SignUpScreen(): JSX.Element {
   const fieldChangeHandle = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> ) : void => {
     const {target} = event;
     const {value, name} = target;
-    // eslint-disable-next-line no-console
-    console.log(value, name);
     setFormData({...formData, [name]: value});
-    // eslint-disable-next-line no-console
-    console.log(formData);
   };
 
   const acceptUserAgreementHandle = (evt: ChangeEvent<HTMLInputElement>) => {
     setIsUserAgreementAccepted((currentState) => !currentState);
+  };
+
+  const onFileChange = (e: ChangeEvent<HTMLInputElement> ) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
 
@@ -115,7 +120,14 @@ function SignUpScreen(): JSX.Element {
                     <div className="sign-up__load-photo">
                       <div className="input-load-avatar">
                         <label>
-                          <input className="visually-hidden" type="file" accept="image/png, image/jpeg"/>
+                          <input
+                            className="visually-hidden"
+                            name = 'avatar'
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            onChange = {onFileChange}
+
+                          />
                           <span className="input-load-avatar__btn">
                             <svg width="20" height="20" aria-hidden="true">
                               <use xlinkHref="/sprites.svg#icon-import"></use>
@@ -253,7 +265,7 @@ function SignUpScreen(): JSX.Element {
 
 
       </main>
-      <Details {...formData} />
+      <Details file= {file} {...formData} />
     </div>
   );
 }

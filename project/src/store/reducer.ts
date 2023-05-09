@@ -1,10 +1,19 @@
 import {createReducer} from '@reduxjs/toolkit';
-import { LocationTitles } from '../const';
-import { setActiveLocationOption } from './action';
+import { loadTrainings, requireAuthorization, setActiveLocationOption } from './action';
+import { AuthorizationStatus } from '../const';
+import { Training } from '../types/training.interface';
+
+type InitialState = {
+  activeLocationOption: string;
+  trainings: Training[];
+  authorizationStatus: AuthorizationStatus;
+}
 
 
-const initialState = {
-  activeLocationOption: LocationTitles.Petrogradskaya
+const initialState: InitialState = {
+  activeLocationOption: '',
+  trainings: [],
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 // const newLocationOption = LocationTitles.Pionerskaya;
@@ -13,6 +22,12 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setActiveLocationOption, (state, action) => {
       state.activeLocationOption = action.payload;
+    })
+    .addCase(loadTrainings, (state, action)=>{
+      state.trainings = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 
