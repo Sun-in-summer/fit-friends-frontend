@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
+import { AppRoute, UserRole } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 
 function Header(): JSX.Element {
+
+  const role = useAppSelector((state) => state.role);
+
   return (
 
 
@@ -19,25 +24,25 @@ function Header(): JSX.Element {
               </Link>
             </li>
             <li className="main-nav__item">
-              <a className="main-nav__link" href="#" aria-label="Личный кабинет">
+              <Link className="main-nav__link" to={role === UserRole.Coach ? AppRoute.CoachProfile : AppRoute.UserProfile} aria-label="Личный кабинет">
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="/sprites.svg#icon-user"></use>
                 </svg>
-              </a>
+              </Link>
             </li>
             <li className="main-nav__item">
-              <a className="main-nav__link" href="#" aria-label="Друзья">
+              <Link className="main-nav__link" to={AppRoute.MyFriends} aria-label="Друзья">
                 <svg width="22" height="16" aria-hidden="true">
                   <use xlinkHref="/sprites.svg#icon-friends"></use>
                 </svg>
-              </a>
+              </Link>
             </li>
             <li className="main-nav__item main-nav__item--notifications">
-              <a className="main-nav__link" href="#" aria-label="Уведомления">
+              <Link className="main-nav__link" to={AppRoute.Notifications} aria-label="Уведомления">
                 <svg width="14" height="18" aria-hidden="true">
                   <use xlinkHref="/sprites.svg#icon-notification"></use>
                 </svg>
-              </a>
+              </Link>
               <div className="main-nav__dropdown">
                 <p className="main-nav__label">Оповещения</p>
                 <ul className="main-nav__sublist">

@@ -14,9 +14,9 @@ function NotFoundScreen(): JSX.Element {
       <Header />
       <section className="not-found__no-page">
         <div className="not found__status-wrapper tabs__content">
-          <img className ="not-found__picture" src='img/not-found.png' alt="error 404"/>
+          <img className ="not-found__picture" src='img/not-found.jpg' alt="error 404"/>
           <h1 className="not-found__status">Page not found</h1>
-          <Link to={AppRoute.Main} className="not-found__status-description">Return to the homepage</Link>
+          <Link to={AppRoute.Root} className="not-found__status-description">Return to the homepage</Link>
         </div>
       </section>
     </div>

@@ -7,6 +7,8 @@ import { gyms } from './mocks/gyms';
 import { reviews } from './mocks/reviews';
 import {store} from './store';
 import { Provider } from 'react-redux';
+import ErrorMessage from './components/error-message/error-message';
+import { checkAuthAction, fetchTrainingssAction } from './store/api-actions';
 
 
 const Setting = {
@@ -22,6 +24,9 @@ const Setting = {
 } as const;
 
 
+store.dispatch(fetchTrainingssAction());
+store.dispatch(checkAuthAction());
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
@@ -31,6 +36,7 @@ root.render(
     <Provider
       store ={store}
     >
+      <ErrorMessage />
       <App
         popularTrainingsQty={Setting.PopularTrainingsQty}
         lookForCompanyUsersQty={Setting.LookForCompanyUsersQty}
@@ -45,7 +51,9 @@ root.render(
         users = {users}
         gyms = {gyms}
         reviews ={reviews}
+
       />
+
     </Provider>
   </React.StrictMode>,
 );

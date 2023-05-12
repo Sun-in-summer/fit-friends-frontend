@@ -1,5 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { Route, Routes } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import IntroScreen from '../../pages/intro-screen/intro-screen';
 import SignInScreen from '../../pages/sign-in-screen/sing-in-screen';
 import SignUpScreen from '../../pages/sign-up-screen/sign-up-screen';
@@ -14,6 +14,9 @@ import { Training } from '../../types/training.interface';
 import { ExtendedUser } from '../../types/user.interface';
 import { Review } from '../../types/review.interface';
 import { Gym } from '../../types/gym.interface';
+import { useAppSelector } from '../../hooks';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 // import { ChangeEvent, useState } from 'react';
 
 
@@ -41,10 +44,15 @@ function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty
   reviews
 }: AppScreenProps): JSX.Element {
 
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  // const isTrainingsDataLoading = useAppSelector((state) => state.isTrainingsDataLoading);
+
+  // if(authorizationStatus === AuthorizationStatus.Unknown ||)
+
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
             path={AppRoute.Root}
@@ -72,7 +80,7 @@ function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty
             path={AppRoute.Main}
             element = {
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={authorizationStatus}
               >
                 <IndexScreen
                   popularTrainingsQty = {popularTrainingsQty}
@@ -95,7 +103,7 @@ function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty
             element={<NotFoundScreen />}
           />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
 
   );

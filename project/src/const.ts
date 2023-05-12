@@ -1,3 +1,7 @@
+export const TIMEOUT_SHOW_ERROR = 2000;
+export const TRAINING_SERVICE_BACKEND_URL = 'http://localhost:3333/api';
+export const USER_SERVICE_BACKEND_URL = 'http://localhost:3332/api';
+
 export enum AppRoute {
   Test ='/test',
   Root = '/',
@@ -5,7 +9,8 @@ export enum AppRoute {
   Register = '/register',
   Questionnaire = '/questionnaire/role',
   CoachQuestionnaire = '/questionnaire/coach',
-  CoachProfile = '/coach-profile',
+  CoachProfile = '/profile/coach',
+  UserProfile ='profile/user',
   CreateTraining = '/create-training',
   CoachTrainings = '/coach-trainings',
   CoachOrders ='/coach-orders',
@@ -14,7 +19,6 @@ export enum AppRoute {
   Main = '/main',
   TrainingsCatalogue = '/trainings',
   Training = '/trainings/:id',
-  UserProfile = '/user/profile',
   MyPurchases = '/user/purchases',
   MyGyms = '/user/my-gyms',
   TrainingsDiary = '/user/trainings-diary',
@@ -23,7 +27,8 @@ export enum AppRoute {
   Gym = '/gyms/:id',
   GymLocation = '/gyms/location/:id',
   UsersCatalogue = '/users',
-  User = '/user/:id'
+  User = '/user/:id',
+  Notifications = '/notifications'
 }
 
 export enum APIRoute {
