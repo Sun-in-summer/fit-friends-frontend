@@ -1,4 +1,4 @@
-export const TIMEOUT_SHOW_ERROR = 2000;
+
 export const TRAINING_SERVICE_BACKEND_URL = 'http://localhost:3333/api';
 export const USER_SERVICE_BACKEND_URL = 'http://localhost:3332/api';
 

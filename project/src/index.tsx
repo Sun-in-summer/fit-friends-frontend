@@ -7,8 +7,8 @@ import { gyms } from './mocks/gyms';
 import { reviews } from './mocks/reviews';
 import {store} from './store';
 import { Provider } from 'react-redux';
-import ErrorMessage from './components/error-message/error-message';
 import { checkAuthAction, fetchTrainingssAction } from './store/api-actions';
+import { ToastContainer } from 'react-toastify';
 
 
 const Setting = {
@@ -36,7 +36,7 @@ root.render(
     <Provider
       store ={store}
     >
-      <ErrorMessage />
+      <ToastContainer />
       <App
         popularTrainingsQty={Setting.PopularTrainingsQty}
         lookForCompanyUsersQty={Setting.LookForCompanyUsersQty}

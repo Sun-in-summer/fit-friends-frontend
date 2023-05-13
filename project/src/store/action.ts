@@ -10,7 +10,6 @@ export const loadTrainings = createAction<Training[]>('data/loadTrainings');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
-export const setError = createAction<string | null>('data/setError');
 
 export const setTrainingsDataLoadingStatus = createAction<boolean>('data/setTrainingsDataLoadingStatus');
 

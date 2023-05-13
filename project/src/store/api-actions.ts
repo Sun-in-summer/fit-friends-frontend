@@ -1,24 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AppDispatch, State } from '../types/state';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR, TRAINING_SERVICE_BACKEND_URL, USER_SERVICE_BACKEND_URL } from '../const';
-import { loadTrainings, requireAuthorization, setError, setTrainingsDataLoadingStatus } from './action';
+import { APIRoute, AuthorizationStatus, TRAINING_SERVICE_BACKEND_URL, USER_SERVICE_BACKEND_URL } from '../const';
+import { loadTrainings, requireAuthorization, setTrainingsDataLoadingStatus } from './action';
 import { Training } from '../types/training.interface';
-import { store } from '.';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 
-
-export const clearErrorAction = createAsyncThunk(
-  'data/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR,
-    );
-  },
-);
 
 export const fetchTrainingssAction = createAsyncThunk<void, undefined, {
   dispacth: AppDispatch;
