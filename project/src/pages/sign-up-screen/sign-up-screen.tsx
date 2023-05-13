@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import {Helmet} from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, GenderNames, UserRole } from '../../const';
@@ -17,7 +17,8 @@ type DetailsProps = {
     file: File | undefined;
 }
 
-function Details({name, email, sex, birthday, password, avatar, file}: DetailsProps) {
+function Details({name, email, sex, birthday, password, avatar, file}: DetailsProps) { //удалить
+
 
   const convertDate = () => {
     if (birthday !== '') {
@@ -46,6 +47,7 @@ function Details({name, email, sex, birthday, password, avatar, file}: DetailsPr
 
 function SignUpScreen(): JSX.Element {
 
+
   const [userRole, setUserRole] = useState(UserRole.Coach);
   const [formData, setFormData] = useState({
     name: '',
@@ -54,14 +56,15 @@ function SignUpScreen(): JSX.Element {
     location: '',
     password: '',
     sex: GenderNames.Female,
-    role: userRole,
-    avatar: ''
+    role: UserRole.Coach,
+    avatar: undefined as unknown
   });
 
   const [isUserAgreementAccepted, setIsUserAgreementAccepted ] = useState<boolean>(true);
-  const [file, setFile] = useState<File>();
 
   const navigate = useNavigate();
+
+  const avatarRef = useRef<HTMLDivElement>(null);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) : void => {
     const {target} = event;
@@ -84,9 +87,16 @@ function SignUpScreen(): JSX.Element {
     setIsUserAgreementAccepted((currentState) => !currentState);
   };
 
+  const handleAddAvatar = (file: File) => {
+    setFormData({ ...formData, avatar: file });
+  };
+
   const onFileChange = (e: ChangeEvent<HTMLInputElement> ) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      const file = e.target.files[0];
+      handleAddAvatar(file);
+      (avatarRef.current as HTMLDivElement).style.background =
+      `url(${URL.createObjectURL(file)}) no-repeat center/cover`;
     }
   };
 
@@ -265,7 +275,7 @@ function SignUpScreen(): JSX.Element {
 
 
       </main>
-      <Details file= {file} {...formData} />
+      <Details file= {formData.avatar} {...formData} />
     </div>
   );
 }

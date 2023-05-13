@@ -14,9 +14,10 @@ import { Training } from '../../types/training.interface';
 import { ExtendedUser } from '../../types/user.interface';
 import { Review } from '../../types/review.interface';
 import { Gym } from '../../types/gym.interface';
-import { useAppSelector } from '../../hooks';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/selector';
 // import { ChangeEvent, useState } from 'react';
 
 
@@ -44,7 +45,9 @@ function App({popularTrainingsQty, lookForCompanyUsersQty, specialForYouItemsQty
   reviews
 }: AppScreenProps): JSX.Element {
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+
   // const isTrainingsDataLoading = useAppSelector((state) => state.isTrainingsDataLoading);
 
   // if(authorizationStatus === AuthorizationStatus.Unknown ||)

@@ -3,14 +3,14 @@ import LocationOption from '../location-option/location-option';
 import { LocationTitles } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setActiveLocationOption } from '../../store/action';
+import { getActiveLocationOption } from '../../store/select-location-option-process/selector';
 
 
 function LocationOptionsList(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  // const activeLocationOption = useAppSelector(getActiveLocationOption);
-  const activeLocationOption = useAppSelector((state) => state.activeLocationOption);
+  const activeLocationOption = useAppSelector(getActiveLocationOption);
   const [isLocationOptionsListOpened, setIsLocationOptionsListOpened] = useState<boolean>(false);
 
   // const activeLocationOption = LocationTitles.Petrogradskaya;

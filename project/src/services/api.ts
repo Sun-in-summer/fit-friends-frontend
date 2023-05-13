@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
-import { getToken } from './token';
+import { getAccessToken } from './token';
 import { StatusCodes } from 'http-status-codes';
 import {toast} from 'react-toastify';
 
@@ -21,7 +21,7 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const token = getToken();
+      const token = getAccessToken();
 
       if(token && config.headers) {
         config.headers['Authorization'] = `Bearer ${token}`;

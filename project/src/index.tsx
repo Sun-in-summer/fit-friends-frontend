@@ -7,7 +7,7 @@ import { gyms } from './mocks/gyms';
 import { reviews } from './mocks/reviews';
 import {store} from './store';
 import { Provider } from 'react-redux';
-import { checkAuthAction, fetchTrainingssAction } from './store/api-actions';
+import { checkAuthAction, fetchTrainingsAction } from './store/api-actions';
 import { ToastContainer } from 'react-toastify';
 
 
@@ -24,7 +24,7 @@ const Setting = {
 } as const;
 
 
-store.dispatch(fetchTrainingssAction());
+store.dispatch(fetchTrainingsAction());
 store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(

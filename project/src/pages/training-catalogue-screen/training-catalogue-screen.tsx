@@ -1,12 +1,24 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import TrainingCard from '../../components/training-card/training-card';
+import ErrorScreen from '../error-screen/error-screen';
+import { useAppSelector } from '../../hooks';
+import { getErrorStatus } from '../../store/training-data/selector';
 
 type TrainingCatalogueScreenProps ={
   trainingCatalogueTrainingsQty: number;
 }
 
 function TrainingCatalogueScreen({trainingCatalogueTrainingsQty}: TrainingCatalogueScreenProps): JSX.Element {
+
+  const hasError = useAppSelector(getErrorStatus);
+
+  if (hasError) {
+    return (
+      <ErrorScreen/>
+    );
+  }
+
   return (
     <div className="wrapper">
       <Helmet>

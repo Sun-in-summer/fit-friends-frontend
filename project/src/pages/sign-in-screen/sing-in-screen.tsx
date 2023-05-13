@@ -1,8 +1,14 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import {Helmet} from 'react-helmet-async';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthData } from '../../types/auth-data';
-import { loginAction } from '../../store/api-actions';
+import { checkAuthAction, loginAction } from '../../store/api-actions';
+import {toast} from 'react-toastify';
+import { validateSignInForm } from '../../utils/utils';
+import { getAccessToken } from '../../services/token';
+import { AppRoute, UserRole } from '../../const';
+import { useNavigate } from 'react-router-dom';
+
 
 function SignInScreen(): JSX.Element {
 
@@ -10,6 +16,7 @@ function SignInScreen(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispacth = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (authData: AuthData) => {
     dispacth(loginAction(authData));
@@ -17,13 +24,32 @@ function SignInScreen(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if(loginRef.current !== null && passwordRef.current !== null) {
+    if(loginRef.current !== null
+      && passwordRef.current !== null
+      && validateSignInForm(loginRef.current, passwordRef.current)) {
       onSubmit({
         email: loginRef.current.value,
         password: passwordRef.current.value,
       });
+    } else {
+      toast.warn('Invalid Email or password.');
     }
   };
+
+  const isAuthorized = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
+
+  useEffect(()=>{
+    if (isAuthorized && getAccessToken()){
+      dispacth(fetchUser());
+      if (user && user.role === UserRole.Coach ) {
+        navigate(AppRoute.CoachProfile);
+      }
+      if (user && user.role === UserRole.User) {
+        navigate(AppRoute.Main);
+      }
+    }
+  });
 
 
   return (
