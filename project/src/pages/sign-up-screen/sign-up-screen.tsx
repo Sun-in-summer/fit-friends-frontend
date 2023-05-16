@@ -1,59 +1,65 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {Helmet} from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, GenderNames, UserRole } from '../../const';
 import SignUpGenderBlock from '../../components/sign-up-gender-block/sign-up-gender-block';
 import LocationOptionsList from '../../components/location-options-list/location-options-list';
-import dayjs from 'dayjs';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import Avatar from '../../components/avatar/avatar';
+import {registerUserAction} from '../../store/api-actions';
+import { getActiveLocationOption } from '../../store/select-location-option-process/selector';
+import { getUser } from '../../store/user-process/selector';
 
 
-type DetailsProps = {
-    name: string;
-    email: string;
-    sex: string;
-    birthday: string;
-    password: string;
-    avatar: string;
-    file: File | undefined;
-}
+// type DetailsProps = {
+//     name: string;
+//     email: string;
+//     sex: string;
+//     birthday: string;
+//     password: string;
+//     location: string;
+//     role: string;
 
-function Details({name, email, sex, birthday, password, avatar, file}: DetailsProps) { //удалить
+// }
+
+// function Details({name, email, sex, birthday, password, location, role}: DetailsProps) { //удалить
 
 
-  const convertDate = () => {
-    if (birthday !== '') {
-      return dayjs(birthday).toISOString();
-    }
-    return birthday;
-  };
+//   const convertDate = () => {
+//     if (birthday !== '') {
+//       return dayjs(birthday).toISOString();
+//     }
+//     return birthday;
+//   };
 
-  const date = convertDate();
-  return (
-    <>
-      <h2>Проверка введённых данных:</h2>
-      <p>
-        <b>Имя: </b>{name}<br />
-        <b>Email: </b>{email}<br />
-        <b>Пол: </b>{sex}<br />
-        <b>ДР: </b>{date}<br />
-        <b>pass: </b>{password}<br />
-        <b>Аватар: </b>{avatar}<br />
-        <b>File: </b>{file?.name}<br />
-      </p>
-    </>
-  );
-}
+//   const date = convertDate();
+//   return (
+//     <>
+//       <h2>Проверка введённых данных:</h2>
+//       <p>
+//         <b>Имя: </b>{name}<br />
+//         <b>Email: </b>{email}<br />
+//         <b>Пол: </b>{sex}<br />
+//         <b>ДР: </b>{date}<br />
+//         <b>pass: </b>{password}<br />
+//         <b>place: </b>{location}<br />
+//         <b>role: </b>{role}<br />
+
+
+//       </p>
+//     </>
+//   );
+// }
 
 
 function SignUpScreen(): JSX.Element {
 
 
-  const [userRole, setUserRole] = useState(UserRole.Coach);
+  const [downloadedFile, setDownloadedFile ] = useState< string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     birthday: '',
-    location: '',
     password: '',
     sex: GenderNames.Female,
     role: UserRole.Coach,
@@ -62,19 +68,39 @@ function SignUpScreen(): JSX.Element {
 
   const [isUserAgreementAccepted, setIsUserAgreementAccepted ] = useState<boolean>(true);
 
+  const user = useAppSelector(getUser);
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const avatarRef = useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    if (user !== null ){
+      if (user && user.role === UserRole.Coach ) {
+        navigate(AppRoute.CoachQuestionnaire);
+      }
+      if (user && user.role === UserRole.User) {
+        navigate(AppRoute.UserQuestionnaire);
+      }
+    }
+  },[navigate, user]);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) : void => {
-    const {target} = event;
-    const {value} = target;
-    setUserRole(value as UserRole);
-  };
+
+  const activeLocationOption = useAppSelector(getActiveLocationOption);
 
   const onSubmit = (evt : FormEvent<HTMLFormElement> ) => {
     evt.preventDefault();
-    navigate(AppRoute.Questionnaire.replace('role', userRole));
+
+    dispatch(registerUserAction({
+      ...formData,
+      place: activeLocationOption,
+      gender: formData.sex,
+      firstname: formData.name,
+      dateBirth: formData.birthday,
+      trainingLevel: 'новичок',
+      trainingType: ['кроссфит'],
+      sentRequestForFriends: [],
+      avatar: downloadedFile
+    }));
   };
 
   const fieldChangeHandle = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> ) : void => {
@@ -91,12 +117,13 @@ function SignUpScreen(): JSX.Element {
     setFormData({ ...formData, avatar: file });
   };
 
+
   const onFileChange = (e: ChangeEvent<HTMLInputElement> ) => {
     if (e.target.files) {
       const file = e.target.files[0];
       handleAddAvatar(file);
-      (avatarRef.current as HTMLDivElement).style.background =
-      `url(${URL.createObjectURL(file)}) no-repeat center/cover`;
+      const downloadedFileUrl = URL.createObjectURL(file);
+      setDownloadedFile(downloadedFileUrl);
     }
   };
 
@@ -139,9 +166,11 @@ function SignUpScreen(): JSX.Element {
 
                           />
                           <span className="input-load-avatar__btn">
-                            <svg width="20" height="20" aria-hidden="true">
-                              <use xlinkHref="/sprites.svg#icon-import"></use>
-                            </svg>
+                            { downloadedFile ?
+                              <Avatar avatar = {downloadedFile}></Avatar> :
+                              <svg width="20" height="20" aria-hidden="true">
+                                <use xlinkHref="/sprites.svg#icon-import"></use>
+                              </svg>}
                           </span>
                         </label>
                       </div>
@@ -213,41 +242,39 @@ function SignUpScreen(): JSX.Element {
                     <div className="sign-up__role">
                       <h2 className="sign-up__legend">Выберите роль</h2>
                       <div className="role-selector sign-up__role-selector">
-                        <div className="role-btn">
-                          <label>
-                            <input
-                              className="visually-hidden"
-                              type="radio"
-                              name="role"
-                              value="coach"
-                              onChange = {onChange}
-                            />
-                            <span className="role-btn__icon">
-                              <svg width="12" height="13" aria-hidden="true">
-                                <use xlinkHref="/sprites.svg#icon-cup"></use>
-                              </svg>
-                            </span>
-                            <span className="role-btn__btn">Я хочу тренировать</span>
-                          </label>
-                        </div>
-                        <div className="role-btn">
-                          <label>
-                            <input
-                              className="visually-hidden"
-                              type="radio"
-                              name="role"
-                              value="user" //было sportsman
-                              onChange = {onChange}
-                            />
-                            <span className="role-btn__icon" >
-                              <svg width="12" height="13" aria-hidden="true">
-                                <use xlinkHref="/sprites.svg#icon-weight"></use>
-                              </svg>
-                            </span><span className="role-btn__btn">Я хочу тренироваться</span>
-                          </label>
-                        </div>
+                        {
+                          [ UserRole.Coach, UserRole.User ].map((item) => (
+                            <div className="role-btn" key={ item }>
+                              <label>
+                                <input
+                                  className="visually-hidden"
+                                  type="radio"
+                                  name="role"
+                                  value={ item }
+                                  defaultChecked={ item === formData.role }
+                                  onChange={ fieldChangeHandle }
+                                />
+                                <span className="role-btn__icon">
+                                  <svg width="12" height="13" aria-hidden="true">
+                                    { item === UserRole.Coach ?
+                                      <use xlinkHref="/sprites.svg#icon-cup"></use> :
+                                      <use xlinkHref="/sprites.svg#icon-weight"></use>}
+
+                                  </svg>
+                                </span>
+                                <span className="role-btn__btn">
+                                  { item === UserRole.Coach ?
+                                    'Я хочу тренировать' :
+                                    'Я хочу тренироваться'}
+                                </span>
+                              </label>
+                            </div>
+                          ))
+                        }
                       </div>
                     </div>
+
+
                     <div className="sign-up__checkbox">
                       <label>
                         <input
@@ -275,7 +302,7 @@ function SignUpScreen(): JSX.Element {
 
 
       </main>
-      <Details file= {formData.avatar} {...formData} />
+
     </div>
   );
 }

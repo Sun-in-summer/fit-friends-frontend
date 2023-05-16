@@ -52,7 +52,8 @@ function LocationOptionsList(): JSX.Element {
                 locationOption ={locationOption}
                 key={locationOption}
                 activeLocationOption = {activeLocationOption}
-                onLocationOptionClick ={handleLocationOptionClick}
+                onLocationOptionClick ={ handleLocationOptionClick}
+
               />
             )
         )}

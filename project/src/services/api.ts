@@ -19,11 +19,14 @@ export const createAPI = (): AxiosInstance => {
     timeout: REQUEST_TIMEOUT,
   });
 
-  api.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
-      const token = getAccessToken();
 
-      if(token && config.headers) {
+  api.interceptors.request.use(
+
+    (config: AxiosRequestConfig) => {
+
+      const token = getAccessToken();
+      if( token !== 'undefined' && config.headers) {
+
         config.headers['Authorization'] = `Bearer ${token}`;
       }
       return config;

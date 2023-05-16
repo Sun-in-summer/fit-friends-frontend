@@ -6,7 +6,7 @@ export interface BasicUser {
   id?: string ;
   firstname: string;
   email: string;
-  avatar: string;
+  avatar: string | unknown;
   passwordHash?: string;
   gender: string;
   dateBirth?: string;
@@ -53,32 +53,34 @@ export interface ExtendedUser extends BasicUser {
   isReadyForTraining?: boolean;
 }
 
+export interface ExtendedUserWithPassword extends ExtendedUser {
+  password: string;
 
-// export type User = {
-//   id?: string ;
-//   firstname: string;
-//   email: string;
-//   avatar: string;
-//   passwordHash?: string;
-//   gender: string;
-//   dateBirth?: string;
-//   role: string;
-//   place: string;
-//   createdAt?: string;
-//   myFriends?: string[];
-//   trainingLevel: string;
-//   trainingType: string[];
-//   favoriteGyms?: number[];
-//   isEmailVerified?: boolean;
-//   isReadyToGetNotifications?: boolean;
-//   favoriteCoaches?: string[];
-//   sentRequestForFriends: string[];
-//   gotRequestForFriends?: string[];
-//   certificate?: string;
-//   credits?: string;
-//   isReadyToTrainPersonally?: boolean;
-//   trainingTime?: string;
-//   caloriesToDrop?: number;
-//   caloriesToSpendPerDay?: number;
-//   isReadyForTraining?: boolean;
-// }
+}
+
+export type BasicUserInfo = {
+  firstname: string;
+  email: string;
+  avatar: File | unknown;
+  password: string;
+  gender: string;
+  dateBirth?: string;
+  role: string;
+  place: string;
+}
+
+
+export type AdditionalUserInfo = {
+  id: string | undefined;
+  role: string | undefined;
+  certificate?: string;
+  credits?: string;
+  isReadyToTrainPersonally?: boolean;
+  trainingTime?: string;
+  trainingLevel: string;
+  trainingType: string[];
+  caloriesToDrop?: number;
+  caloriesToSpendPerDay?: number;
+  isReadyForTraining?: boolean;
+}
+

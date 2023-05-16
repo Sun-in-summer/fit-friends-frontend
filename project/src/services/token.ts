@@ -1,7 +1,7 @@
-const ACCESS_TOKEN_KEY_NAME = 'access-token';
-const REFRESH_TOKEN_KEY_NAME = 'refresh-token';
+const ACCESS_TOKEN_KEY_NAME = 'access_token';
+const REFRESH_TOKEN_KEY_NAME = 'refresh_token';
 
-export type Token = string;
+export type Token = string ;
 
 export const getAccessToken = (): Token => {
   const token = localStorage.getItem(ACCESS_TOKEN_KEY_NAME);

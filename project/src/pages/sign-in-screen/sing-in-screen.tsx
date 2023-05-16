@@ -2,12 +2,12 @@ import { FormEvent, useEffect, useRef } from 'react';
 import {Helmet} from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthData } from '../../types/auth-data';
-import { checkAuthAction, loginAction } from '../../store/api-actions';
+import { loginAction } from '../../store/api-actions';
 import {toast} from 'react-toastify';
 import { validateSignInForm } from '../../utils/utils';
-import { getAccessToken } from '../../services/token';
-import { AppRoute, UserRole } from '../../const';
+import { AppRoute, AuthorizationStatus, UserRole } from '../../const';
 import { useNavigate } from 'react-router-dom';
+import { getAuthorizationStatus, getUser, getUserfFullInfoLoadingStatus } from '../../store/user-process/selector';
 
 
 function SignInScreen(): JSX.Element {
@@ -15,18 +15,21 @@ function SignInScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const dispacth = useAppDispatch();
+  const dispatсh = useAppDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (authData: AuthData) => {
-    dispacth(loginAction(authData));
+
+    dispatсh(loginAction(authData));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
     if(loginRef.current !== null
       && passwordRef.current !== null
       && validateSignInForm(loginRef.current, passwordRef.current)) {
+
       onSubmit({
         email: loginRef.current.value,
         password: passwordRef.current.value,
@@ -36,12 +39,13 @@ function SignInScreen(): JSX.Element {
     }
   };
 
-  const isAuthorized = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const user = useAppSelector(getUser);
+  const isUserFullInfoLoading = useAppSelector(getUserfFullInfoLoadingStatus);
+
 
   useEffect(()=>{
-    if (isAuthorized && getAccessToken()){
-      dispacth(fetchUser());
+    if (authorizationStatus === AuthorizationStatus.Auth && !isUserFullInfoLoading ){
       if (user && user.role === UserRole.Coach ) {
         navigate(AppRoute.CoachProfile);
       }
@@ -49,7 +53,7 @@ function SignInScreen(): JSX.Element {
         navigate(AppRoute.Main);
       }
     }
-  });
+  },[authorizationStatus, dispatсh, isUserFullInfoLoading, navigate, user]);
 
 
   return (

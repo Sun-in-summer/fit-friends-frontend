@@ -3,25 +3,26 @@ import { GenderNames } from '../../const';
 
 type SignUpGenderBlockProps = {
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
-  genderValue : string ;
+  genderValue: string;
 }
 
-function SignUpGenderBlock({onChange, genderValue}: SignUpGenderBlockProps): JSX.Element {
+function SignUpGenderBlock({ onChange, genderValue }: SignUpGenderBlockProps): JSX.Element {
 
   const genders = Object.values(GenderNames);
-  return(
+  return (
     <Fragment>
       {genders.map((item) => {
         const isChecked = genderValue === item;
         return (
-          <div className="custom-toggle-radio__block" key ={item}>
+          <div className="custom-toggle-radio__block" key={item}>
             <label>
               <input
                 type="radio"
                 name="sex"
-                onChange ={onChange}
-                checked = {isChecked}
-                value = {item}
+                id={item}
+                onChange={onChange}
+                checked={isChecked}
+                value={item}
               />
               <span className="custom-toggle-radio__icon">
               </span><span className="custom-toggle-radio__label">{item}</span>

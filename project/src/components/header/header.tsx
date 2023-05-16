@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
 import { AppRoute, UserRole } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getUser } from '../../store/user-process/selector';
 
 
 function Header(): JSX.Element {
 
-  const role = useAppSelector((state) => state.role);
+  const user = useAppSelector(getUser);
+  const role = user?.role;
 
   return (
 

@@ -6,15 +6,14 @@ export enum AppRoute {
   Root = '/',
   Login = '/login',
   Register = '/register',
-  Questionnaire = '/questionnaire/role',
-  CoachQuestionnaire = '/questionnaire/coach',
+  CoachQuestionnaire = '/questionnaire-coach',
   CoachProfile = '/profile/coach',
   UserProfile ='profile/user',
   CreateTraining = '/create-training',
   CoachTrainings = '/coach-trainings',
   CoachOrders ='/coach-orders',
   MyFriends ='/my-friends',
-  UserQuestionnaire = '/questionnaire/user',
+  UserQuestionnaire = '/questionnaire-user',
   Main = '/main',
   TrainingsCatalogue = '/trainings',
   Training = '/trainings/:id',
@@ -36,6 +35,10 @@ export enum APIRoute {
   Reviews = '/reviews',
   Login = '/login',
   Logout = '/logout',
+  CheckAuth ='/checkAuth',
+  Register = '/register',
+  RegisterBasic = '/register-basic',
+  Questionnaire = '/questionnaire'
 
 }
 
@@ -48,6 +51,11 @@ export enum AuthorizationStatus {
 
 
 export const enum UserRole {
+  User = 'пользователь',
+  Coach = 'тренер',
+}
+
+export const enum UserRoleEn {
   User = 'user',
   Coach = 'coach',
 }
@@ -67,4 +75,6 @@ export const LocationTitles = {
   Sportivnaya: 'Спортивная',
 };
 
+
+export const LEVELS = ['Новичок' , 'Любитель' , 'Профессионал'];
 
