@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, UserRole, } from '../../const';
 import { UserProcess } from '../../types/state';
-import { checkAuthAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction } from '../api-actions';
+import { checkAuthAction, fetchManyUsersAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction, updateUserAction } from '../api-actions';
 import { NameSpace } from '../store-const';
 import { setUserBasicInfo } from '../action';
 
@@ -17,6 +17,11 @@ const initialState: UserProcess = {
   basicUserInfo: null,
   isUserRegistering: false,
   isQuestionnaireSending: false,
+  isQuestionnaireSent: false,
+  isUserUpdating: false,
+  isCompanyUsersLoading: false,
+  isCompanyUsersLoadingError: false,
+  usersForCompany: [],
 
 
 };
@@ -27,15 +32,16 @@ export const userProcess = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(checkAuthAction.fulfilled, (state) => {
+      .addCase(checkAuthAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.isAuthorized = true;
+        state.user = action.payload;
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.isAuthorized = false;
       })
-      .addCase(loginAction.fulfilled, (state) => {
+      .addCase(loginAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.isAuthorized = true;
       })
@@ -66,25 +72,53 @@ export const userProcess = createSlice({
       })
       .addCase(registerUserAction.pending, (state) => {
         state.isUserRegistering = true;
+        state.authorizationStatus = AuthorizationStatus.Unknown;
       })
       .addCase(registerUserAction.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.isUserRegistering = false;
+        state.authorizationStatus = AuthorizationStatus.Auth;
       })
       .addCase(registerUserAction.rejected, (state, { payload }) => {
         state.isUserRegistering = false;
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
       .addCase(sendQuestionnaireAction.pending, (state) => {
         state.isQuestionnaireSending = true;
+        state.isQuestionnaireSent = false;
       })
       .addCase(sendQuestionnaireAction.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.isQuestionnaireSending = false;
+        state.isQuestionnaireSent = true;
       })
       .addCase(sendQuestionnaireAction.rejected, (state) => {
         state.isQuestionnaireSending = false;
+        state.isQuestionnaireSent = false;
+      })
+      .addCase(updateUserAction.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        state.isUserUpdating = false;
+      })
+      .addCase(updateUserAction.rejected, (state, { payload }) => {
+        state.isUserUpdating = false;
+      })
+      .addCase(updateUserAction.pending, (state) => {
+        state.isUserUpdating = true;
+      })
+      .addCase(fetchManyUsersAction.fulfilled, (state, action)=>{
+        state.usersForCompany = action.payload;
+        state.isCompanyUsersLoading = false;
+
+      })
+      .addCase(fetchManyUsersAction.pending, (state, action)=>{
+        state.isCompanyUsersLoading = true;
+        state.isCompanyUsersLoadingError = false;
+
+      })
+      .addCase(fetchManyUsersAction.rejected, (state, action)=>{
+        state.isCompanyUsersLoading = false;
+        state.isCompanyUsersLoadingError = true;
       });
-
-
   }
 });

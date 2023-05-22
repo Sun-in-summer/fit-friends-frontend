@@ -1,4 +1,5 @@
-import { UserRole, UserRoleEn } from '../const';
+import { AppRoute, NavItemsEn, UserRole, UserRoleEn } from '../const';
+import { TrainingQuery } from '../types/query/training-query';
 import { TrainingLevel, TrainingLevelEn } from '../types/training-level.enum';
 import { TrainingTime, TrainingTimeEn } from '../types/training-time.enum';
 import { TrainingType, TrainingTypeEn } from '../types/training-type.enum';
@@ -74,3 +75,60 @@ export const translateEnToRu = (word: string) => {
   return word;
 };
 
+
+export const getNavRoute = (item: string, role: string | undefined): string => {
+  switch (item) {
+    case NavItemsEn.Main:
+      return AppRoute.Root;
+      break;
+    case NavItemsEn.Profile:
+      if (role === UserRole.Coach) {
+        return AppRoute.CoachProfile;
+        break;
+      }
+      return AppRoute.UserProfile;
+      break;
+    case NavItemsEn.Friends:
+      return AppRoute.MyFriends;
+      break;
+    case NavItemsEn.Notificatios:
+      return AppRoute.Notifications;
+      break;
+    default:
+      return AppRoute.Root;
+  }
+};
+
+
+export const getQueryString = (queryArgs?: TrainingQuery) => {
+  if (!queryArgs) {return '';}
+
+  const queryParams = [
+    `${queryArgs.minPrice !== undefined ? `minPrice=${queryArgs.minPrice}` : ''}`,
+    `${queryArgs.maxPrice !== undefined ? `maxPrice=${queryArgs.maxPrice}` : ''}`,
+    `${queryArgs.minCaloriesQty ? `minCaloriesCount=${queryArgs.minCaloriesQty}` : ''}`,
+    `${queryArgs.maxCaloriesQty ? `maxCaloriesCount=${queryArgs.maxCaloriesQty}` : ''}`,
+    `${queryArgs.minRating ? `minRating=${queryArgs.minRating}` : ''}`,
+    `${queryArgs.maxRating ? `maxRating=${queryArgs.maxRating}` : ''}`,
+    `${queryArgs.duration ? `duration=${queryArgs.duration}` : ''}`,
+    `${queryArgs.trainingTypes ? `trainingType=${queryArgs.trainingTypes}` : ''}`,
+    `${queryArgs.sortOption ? `sortOrder=${queryArgs.sortOption}` : ''}`,
+    `${queryArgs.page ? `page=${queryArgs.page}` : ''}`,
+    `${queryArgs.limit ? `limit=${queryArgs.limit}` : ''}`,
+  ];
+
+  const isNotEmptyString = queryParams.filter((param) => param !== '').join('') !== '';
+
+  const queryString = isNotEmptyString ? `?${queryParams.filter((param) => param !== '').join('&')}` : '';
+
+  return queryString;
+};
+
+
+export const debounce = <T>(callback: (arg: T) => void, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (arg: T) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(arg), delay);
+  };
+};

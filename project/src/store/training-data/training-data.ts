@@ -1,12 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import { NameSpace, TrainingData } from '../store-const';
-import { fetchTrainingsAction } from '../api-actions';
+import { fetchFilteredTrainingsAction, fetchTrainingsAction } from '../api-actions';
 
 const initialState: TrainingData = {
   trainings: [],
   isTrainingsDataLoading: false,
   trainingsHasError: false,
+  filteredTrainings: [],
 };
 
 export const trainingData = createSlice({
@@ -25,6 +26,10 @@ export const trainingData = createSlice({
       .addCase(fetchTrainingsAction.rejected, (state) => {
         state.isTrainingsDataLoading = false;
         state.trainingsHasError = true;
+      })
+      .addCase(fetchFilteredTrainingsAction.fulfilled, (state, action) => {
+        state.filteredTrainings = action.payload[0];
+        state.trainings = action.payload[1];
       });
   }
 });

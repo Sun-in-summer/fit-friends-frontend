@@ -1,14 +1,18 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Logo from '../logo/logo';
-import { AppRoute, UserRole } from '../../const';
+import { NavItemIcons, NavItems } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getUser } from '../../store/user-process/selector';
+import { getNavRoute } from '../../utils/utils';
 
 
 function Header(): JSX.Element {
 
   const user = useAppSelector(getUser);
   const role = user?.role;
+  const navItems = Object.keys(NavItems);
+  const getIcon = (item: string): string => NavItemIcons[item];
+
 
   return (
 
@@ -18,61 +22,24 @@ function Header(): JSX.Element {
         <Logo />
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li className="main-nav__item">
-              <Link className="main-nav__link is-active" to="/" aria-label="На главную">
-                <svg width="18" height="18" aria-hidden="true">
-                  <use xlinkHref="/sprites.svg#icon-home"></use>
-                </svg>
-              </Link>
-            </li>
-            <li className="main-nav__item">
-              <Link className="main-nav__link" to={role === UserRole.Coach ? AppRoute.CoachProfile : AppRoute.UserProfile} aria-label="Личный кабинет">
-                <svg width="16" height="18" aria-hidden="true">
-                  <use xlinkHref="/sprites.svg#icon-user"></use>
-                </svg>
-              </Link>
-            </li>
-            <li className="main-nav__item">
-              <Link className="main-nav__link" to={AppRoute.MyFriends} aria-label="Друзья">
-                <svg width="22" height="16" aria-hidden="true">
-                  <use xlinkHref="/sprites.svg#icon-friends"></use>
-                </svg>
-              </Link>
-            </li>
-            <li className="main-nav__item main-nav__item--notifications">
-              <Link className="main-nav__link" to={AppRoute.Notifications} aria-label="Уведомления">
-                <svg width="14" height="18" aria-hidden="true">
-                  <use xlinkHref="/sprites.svg#icon-notification"></use>
-                </svg>
-              </Link>
-              <div className="main-nav__dropdown">
-                <p className="main-nav__label">Оповещения</p>
-                <ul className="main-nav__sublist">
-                  <li className="main-nav__subitem">
-                    <a className="notification is-active" href="#">
-                      <p className="notification__text">Катерина пригласила вас на&nbsp;тренировку</p>
-                      <time className="notification__time" dateTime="2023-12-23 12:35">23 декабря, 12:35</time>
-                    </a>
+
+            {
+              navItems.map((item) => {
+                const route = getNavRoute(item, role);
+                const icon = getIcon(item);
+                return (
+                  <li className="main-nav__item" key={item}>
+                    <NavLink className={({ isActive }) => (isActive ? 'main-nav__link is-active' : 'main-nav__link')} to={route} end aria-label={NavItems[item]}>
+                      <svg width="18" height="18" aria-hidden="true">
+                        <use xlinkHref={`/sprites.svg#icon-${icon}`}></use>
+                      </svg>
+                    </NavLink >
                   </li>
-                  <li className="main-nav__subitem">
-                    <a className="notification is-active" href="#">
-                      <p className="notification__text">Никита отклонил приглашение на&nbsp;совместную тренировку</p>
-                      <time className="notification__time" dateTime="2023-12-22 09:22">22 декабря, 09:22</time>
-                    </a>
-                  </li>
-                  <li className="main-nav__subitem">
-                    <a className="notification is-active" href="#">
-                      <p className="notification__text">Татьяна добавила вас в&nbsp;друзья</p>
-                      <time className="notification__time" dateTime="2023-12-18 18:50">18 декабря, 18:50</time>
-                    </a>
-                  </li>
-                  {/* <li className="main-nav__subitem"><a className="notification" href="#">
-                        <p className="notification__text">Наталья приняла приглашение на&nbsp;совместную тренировку</p>
-                        <time className="notification__time" dateTime="2023-12-14 08:15">14 декабря, 08:15</time></a>
-                    </li> */}
-                </ul>
-              </div>
-            </li>
+                );
+              })
+            }
+
+
           </ul>
         </nav>
         <div className="search">

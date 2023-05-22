@@ -11,6 +11,8 @@ type QuestionnaireCertificateCaloriesBlockProps = {
   isReadyToTrainPersonally: boolean;
   caloriesToLoose: number;
   caloriesPerDay: number;
+
+
 }
 
 
@@ -19,7 +21,7 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
   const role = user?.role;
 
 
-  if (role !== UserRole.Coach) {
+  if (role === UserRole.Coach) {
     return (
       <Fragment>
         <div className="questionnaire-coach__block">
@@ -35,6 +37,7 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
                   height="20"
                   aria-hidden="true"
                   srcSet="img/sprite/icon-import.svg"
+                  alt=''
                 >
                 </img>
               </span>
@@ -44,6 +47,7 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
                 tabIndex={-1}
                 accept=".pdf, .jpg, .png"
                 onChange={onFileChange}
+                alt=''
               />
             </label>
           </div>
@@ -78,6 +82,7 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
                   height="6"
                   aria-hidden="true"
                   srcSet="img/sprite/arrow-check.svg"
+                  alt=''
                 >
                 </img>
               </span>
@@ -103,9 +108,11 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
             <span className="custom-input__wrapper">
               <input
                 type="number"
-                name="calories-lose"
-                value={caloriesToLoose}
+                name="caloriesToLoose"
+                placeholder='1000'
                 onChange={onChange}
+
+
               />
               <span className="custom-input__text">ккал</span>
             </span>
@@ -121,9 +128,10 @@ function QuestionnaireCertificateCaloriesBlock({ onChange, experience, onCheckbo
             <span className="custom-input__wrapper">
               <input
                 type="number"
-                name="calories-waste"
-                value={caloriesPerDay}
+                name="caloriesPerDay"
+                placeholder='200'
                 onChange={onChange}
+
               />
               <span className="custom-input__text">ккал</span>
             </span>

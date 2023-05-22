@@ -2,16 +2,18 @@ import { Helmet } from 'react-helmet-async';
 import QuestionnaireLevelBlock from '../../components/questionnaire-level-block/questionnaire-level-block';
 import QuestionnaireSpecializationBlock from '../../components/questionnaire-specialization-block/questionaire-specialization-block';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getUser } from '../../store/user-process/selector';
+import { getQuestionnaireSendingResultStatus, getUser } from '../../store/user-process/selector';
 
 import QuestionnaireHowMuchTimeBlock from '../../components/questionnaire-how-much-time-block/questionaire-how-much-time-block';
 import QuestionnaireCertificateCaloriesBlock from '../../components/questionnaire-certificate-calories-block/questionaire-certificate-calories-block';
 import { translateRole } from '../../utils/utils';
-import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import { TrainingLevel } from '../../types/training-level.enum';
 import { TrainingTime } from '../../types/training-time.enum';
 import { AdditionalUserInfo } from '../../types/user.interface';
 import { sendQuestionnaireAction } from '../../store/api-actions';
+import { AppRoute, UserRole } from '../../const';
+import { useNavigate } from 'react-router-dom';
 
 
 function QuestionnaireScreen(): JSX.Element {
@@ -24,12 +26,12 @@ function QuestionnaireScreen(): JSX.Element {
   const [formData, setFormData] = useState({
     level: TrainingLevel.Newbee,
     time: TrainingTime.TenToThirty,
-    caloriesToLoose: 500,
-    caloriesPerDay: 100,
+    caloriesToLoose: 0,
+    caloriesPerDay: 0,
     experience: '',
     isReadyToTrainPersonally: true,
     trainingTypes: [] as string[],
-    certificate: ''
+    certificate: '1.pdf'
   });
 
   const {
@@ -46,8 +48,10 @@ function QuestionnaireScreen(): JSX.Element {
   const fieldChangeHandle = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>): void => {
     const { target } = event;
     const { value, name } = target;
+
     setFormData({ ...formData, [name]: value });
   }, [formData]);
+
 
   const fieldCheckboxChangeHandle = (event: ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, isReadyToTrainPersonally: !isReadyToTrainPersonally });
@@ -92,7 +96,7 @@ function QuestionnaireScreen(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (caloriesToLoose !== 0 && caloriesPerDay !== 0 && experience !== '' && trainingTypes.length !== 0) {
+    if ((caloriesToLoose !== 0 && caloriesPerDay !== 0 && trainingTypes.length !== 0) || (experience !== '' && trainingTypes.length !== 0)) {
       onSubmit({
         id: user?.id,
         role: user?.role,
@@ -107,6 +111,21 @@ function QuestionnaireScreen(): JSX.Element {
 
     }
   };
+
+  const isQuestionnaireSent = useAppSelector(getQuestionnaireSendingResultStatus);
+  // const isQuestionnaireSending = useAppSelector(getQuestionnaireSendingStatus);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isQuestionnaireSent === true) {
+      if (user?.role === UserRole.Coach) {
+        navigate(AppRoute.CoachProfile);
+      }
+      if (user?.role === UserRole.User) {
+        navigate(AppRoute.UserProfile);
+      }
+    }
+  }, [isQuestionnaireSent, navigate, user]);
 
 
   return (
@@ -164,6 +183,7 @@ function QuestionnaireScreen(): JSX.Element {
                         onCheckboxChange={fieldCheckboxChangeHandle}
                         isReadyToTrainPersonally={isReadyToTrainPersonally}
                         onFileChange={fileChangeHandle}
+
                       />
                       <button
                         className="btn questionnaire-coach__button"

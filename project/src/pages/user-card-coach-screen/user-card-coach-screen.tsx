@@ -1,5 +1,7 @@
 import Header from '../../components/header/header';
 import TrainingCard from '../../components/training-card/training-card';
+import { useAppSelector } from '../../hooks';
+import { getTrainingsData } from '../../store/training-data/selector';
 
 
 type UserCardCoachScreenProps = {
@@ -7,10 +9,12 @@ type UserCardCoachScreenProps = {
   role: string;
 }
 
-function UserCardCoachScreen({userCardScreenTrainingsQty, role}: UserCardCoachScreenProps): JSX.Element {
+function UserCardCoachScreen({ userCardScreenTrainingsQty, role }: UserCardCoachScreenProps): JSX.Element {
+
+  const trainings = useAppSelector(getTrainingsData); // заменить на тренировки именно этого тренера
 
   const roleCoachText = (userRole: string) => {
-    if (userRole === 'coach'){
+    if (userRole === 'coach') {
       return 'роль тренер';
     }
     return '';
@@ -60,7 +64,7 @@ function UserCardCoachScreen({userCardScreenTrainingsQty, role}: UserCardCoachSc
   };
 
   const toShowTrainingsList = (userRole: string) => {
-    if(userRole === 'coach'){
+    if (userRole === 'coach') {
       return (
         <div className="user-card-coach__training">
           <div className="user-card-coach__training-head">
@@ -79,14 +83,14 @@ function UserCardCoachScreen({userCardScreenTrainingsQty, role}: UserCardCoachSc
             </div>
           </div>
           <ul className="user-card-coach__training-list">
-            {Array.from({length: userCardScreenTrainingsQty}, (_v, k) => <TrainingCard key={k} /> )}
+            {trainings.map((item) => <TrainingCard key={item.id} item={item} />)}
           </ul>
           <form className="user-card-coach__training-form">
             <button className="btn user-card-coach__btn-training" type="button">Хочу персональную тренировку</button>
             <div className="user-card-coach__training-check">
               <div className="custom-toggle custom-toggle--checkbox">
                 <label>
-                  <input type="checkbox" value="user-agreement-1" name="user-agreement" checked/>
+                  <input type="checkbox" value="user-agreement-1" name="user-agreement" checked />
                   <span className="custom-toggle__icon">
                     <svg width="9" height="6" aria-hidden="true">
                       <use xlinkHref="#arrow-check"></use>
@@ -161,9 +165,9 @@ function UserCardCoachScreen({userCardScreenTrainingsQty, role}: UserCardCoachSc
                       </div>
                       <div className={`user-card${role === 'coach' ? '-coach' : ''}__gallary`}>
                         <ul className={`user-card${role === 'coach' ? '-coach' : ''}__gallary-list`}>
-                          <li className={`user-card${role === 'coach' ? '-coach' : ''}__gallary-item`}><img src="img/content/user-coach-photo1.jpg" srcSet="img/content/user-coach-photo1@2x.jpg 2x" width="334" height="573" alt="photo1"/>
+                          <li className={`user-card${role === 'coach' ? '-coach' : ''}__gallary-item`}><img src="img/content/user-coach-photo1.jpg" srcSet="img/content/user-coach-photo1@2x.jpg 2x" width="334" height="573" alt="photo1" />
                           </li>
-                          <li className={`user-card${role === 'coach' ? '-coach' : ''}_gallary-item`}><img src="img/content/user-coach-photo2.jpg" srcSet="img/content/user-coach-photo2@2x.jpg 2x" width="334" height="573" alt="photo2"/>
+                          <li className={`user-card${role === 'coach' ? '-coach' : ''}_gallary-item`}><img src="img/content/user-coach-photo2.jpg" srcSet="img/content/user-coach-photo2@2x.jpg 2x" width="334" height="573" alt="photo2" />
                           </li>
                         </ul>
                       </div>

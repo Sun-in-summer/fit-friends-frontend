@@ -1,14 +1,14 @@
 import Header from '../../components/header/header';
 import UserCard from '../../components/user-card/user-card';
+import useCompany from '../../hooks/useCompany/useCompany';
 
-type UsersCatalogueScreenProps = {
-  userCatalogueScreenUsersQty: number;
-}
 
-function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScreenProps): JSX.Element {
+function UsersCatalogueScreen(): JSX.Element {
+
+  const users = useCompany();
   return (
     <div className="wrapper">
-      <Header/>
+      <Header />
       <main>
         <section className="inner-page">
           <div className="container">
@@ -30,7 +30,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked/>
+                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -42,7 +42,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked/>
+                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -54,7 +54,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked/>
+                              <input type="checkbox" value="user-agreement-1" name="user-agreement" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -66,7 +66,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="user-agreement-1" name="user-agreement"/>
+                              <input type="checkbox" value="user-agreement-1" name="user-agreement" />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -78,7 +78,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="user-agreement-1" name="user-agreement"/>
+                              <input type="checkbox" value="user-agreement-1" name="user-agreement" />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -100,7 +100,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="spezialization-1" name="spezialization" checked/>
+                              <input type="checkbox" value="spezialization-1" name="spezialization" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -112,7 +112,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="spezialization-1" name="spezialization" checked/>
+                              <input type="checkbox" value="spezialization-1" name="spezialization" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -124,7 +124,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="spezialization-1" name="spezialization" checked/>
+                              <input type="checkbox" value="spezialization-1" name="spezialization" checked />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -136,7 +136,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="spezialization-1" name="spezialization"/>
+                              <input type="checkbox" value="spezialization-1" name="spezialization" />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -148,7 +148,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                         <li className="user-catalog-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="spezialization-1" name="spezialization"/>
+                              <input type="checkbox" value="spezialization-1" name="spezialization" />
                               <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
@@ -169,19 +169,19 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                       <div className="custom-toggle-radio">
                         <div className="custom-toggle-radio__block">
                           <label>
-                            <input type="radio" name="user-agreement"/>
+                            <input type="radio" name="user-agreement" />
                             <span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Новичок</span>
                           </label>
                         </div>
                         <div className="custom-toggle-radio__block">
                           <label>
-                            <input type="radio" name="user-agreement" checked/>
+                            <input type="radio" name="user-agreement" checked />
                             <span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Любитель</span>
                           </label>
                         </div>
                         <div className="custom-toggle-radio__block">
                           <label>
-                            <input type="radio" name="user-agreement" value="user-agreement-1"/>
+                            <input type="radio" name="user-agreement" value="user-agreement-1" />
                             <span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Профессионал</span>
                           </label>
                         </div>
@@ -191,11 +191,11 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
                       <h3 className="user-catalog-form__title user-catalog-form__title--sort">Сортировка</h3>
                       <div className="btn-radio-sort">
                         <label>
-                          <input type="radio" name="sort" checked/>
+                          <input type="radio" name="sort" checked />
                           <span className="btn-radio-sort__label">Тренеры</span>
                         </label>
                         <label>
-                          <input type="radio" name="sort"/>
+                          <input type="radio" name="sort" />
                           <span className="btn-radio-sort__label">Пользователи</span>
                         </label>
                       </div>
@@ -206,7 +206,7 @@ function UsersCatalogueScreen({userCatalogueScreenUsersQty}: UsersCatalogueScree
               <div className="inner-page__content">
                 <div className="users-catalog">
                   <ul className="users-catalog__list">
-                    {Array.from({length: userCatalogueScreenUsersQty}, (_v, k) => <UserCard key= {k} screen ='users-catalogue' role='user' topstatus = {false}/> )}
+                    {users.map((item) => <UserCard key={item.id} screen='users-catalogue' topstatus={false} item={item} />)}
 
                   </ul>
                   <div className="show-more users-catalog__show-more">

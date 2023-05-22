@@ -1,17 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AppDispatch, State } from '../types/state';
-import { APIRoute, AppRoute, TRAINING_SERVICE_BACKEND_URL, USER_SERVICE_BACKEND_URL } from '../const';
+import { APIRoute, TRAINING_SERVICE_BACKEND_URL, USER_SERVICE_BACKEND_URL } from '../const';
 import { Training } from '../types/training.interface';
 import { dropAccessToken, dropRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { UserAuthData } from '../types/user-data';
 import {toast} from 'react-toastify';
 import { AdditionalUserInfo, ExtendedUser, ExtendedUserWithPassword } from '../types/user.interface';
+import { redirectBack } from './action';
+import { Gym } from '../types/gym.interface';
+import { getQueryString } from '../utils/utils';
+import { TrainingQuery } from '../types/query/training-query';
 
 
 const authServiceUrl = `${USER_SERVICE_BACKEND_URL}${APIRoute.Auth}`;
+const updateUserUrl = 'http://localhost:3332/api/auth/update/:id';
 const trainingsServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Trainings}`;
+const gymsServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Gyms}`;
 
 export const fetchTrainingsAction = createAsyncThunk<Training[], undefined, {
   dispacth: AppDispatch;
@@ -20,21 +26,50 @@ export const fetchTrainingsAction = createAsyncThunk<Training[], undefined, {
 }>(
   'data/fetchTrainings',
   async(_arg, {dispatch, extra: api}) => {
-    const {data} = await api.get<Training[]>(trainingsServiceUrl);
+    const {data} = await api.get<Training[]>(`${trainingsServiceUrl}/all`);
     return data;
   }
 );
 
 
-export const checkAuthAction = createAsyncThunk<UserAuthData, undefined, {
+export const fetchFilteredTrainingsAction = createAsyncThunk<Training[][], TrainingQuery | undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFilteredTrainingsAction',
+  async (query, {dispatch, extra: api}) => {
+    const queryString = getQueryString(query);
+    const {data} = await api.get<Training[] >(`${trainingsServiceUrl}${queryString}`);
+    const allTrainings = await api.get<Training[]>(`${trainingsServiceUrl}/all`);
+    return [data, allTrainings.data];
+  },
+);
+
+export const fetchGymsAction = createAsyncThunk<Gym[], undefined, {
+  dispacth: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/fetchGyms',
+  async(_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Gym[]>(gymsServiceUrl);
+    return data;
+  }
+);
+
+
+export const checkAuthAction = createAsyncThunk<ExtendedUser | null, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
+  // eslint-disable-next-line camelcase
+  async (access_token, {dispatch, extra: api}) => {
     try {
-      const {data} = await api.get<UserAuthData>(`${authServiceUrl}${AppRoute.Login}`);
+      // eslint-disable-next-line camelcase
+      const {data} = await api.post<ExtendedUser | null>(`${authServiceUrl}${APIRoute.CheckAuth}`, {access_token});
       return data;
     }
     catch {
@@ -56,6 +91,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveAccessToken(access_token);
     saveRefreshToken(refresh_token);
     dispatch(fetchUser());
+    dispatch(redirectBack());
+
+
   },
 );
 
@@ -83,10 +121,26 @@ export const fetchUser = createAsyncThunk<ExtendedUser, undefined, {
   async(_arg, {dispatch, extra: api}) => {
     try {
       const {data} = await api.post<ExtendedUser>(`${authServiceUrl}${APIRoute.CheckAuth}`);
-      console.log('data v fetchUser', data);
       return data;
     } catch {
       toast.warn('Unable to load  user detailed information, please try later');
+    }
+    throw new Error();
+  }
+);
+
+export const fetchManyUsersAction = createAsyncThunk<ExtendedUser[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/fetchManyUsers',
+  async(_arg, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<ExtendedUser[]>(authServiceUrl);
+      return data;
+    } catch {
+      toast.warn('Unable to load  users for company, please try later');
     }
     throw new Error();
   }
@@ -125,7 +179,6 @@ export const registerUserAction = createAsyncThunk<ExtendedUser, ExtendedUserWit
         trainingType,
         sentRequestForFriends
       } );
-      console.log('data v register user', data);
       return data;
     } catch {
       toast.warn('Unable to register  user, please try later');
@@ -152,10 +205,9 @@ export const sendQuestionnaireAction = createAsyncThunk<ExtendedUser, Additional
     trainingTime,
     caloriesToDrop,
     caloriesToSpendPerDay
-
-
-  }, {dispatch, extra: api}) => {
+  } , {dispatch, extra: api}) => {
     try {
+
       const {data} = await api.post<ExtendedUser>(`${authServiceUrl}${APIRoute.Questionnaire}`, {
         id,
         role,
@@ -168,7 +220,6 @@ export const sendQuestionnaireAction = createAsyncThunk<ExtendedUser, Additional
         caloriesToDrop,
         caloriesToSpendPerDay
       } );
-      console.log('data v sendQuestionnaire user', data);
       return data;
     } catch {
       toast.warn('Unable to add information about user, please try later');
@@ -176,4 +227,42 @@ export const sendQuestionnaireAction = createAsyncThunk<ExtendedUser, Additional
     throw new Error();
   }
 );
+
+
+export const updateUserAction = createAsyncThunk<ExtendedUser, ExtendedUser, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/apdateUser',
+  async({
+    id,
+    firstname,
+    gender,
+    place,
+    trainingLevel,
+    trainingType,
+    isReadyToTrainPersonally,
+    email,
+    avatar,
+    role,
+    sentRequestForFriends
+  }, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.patch<ExtendedUser>(updateUserUrl.replace(':id', id as string), {
+        firstname,
+        gender,
+        place,
+        trainingLevel,
+        trainingType,
+        isReadyToTrainPersonally
+      } );
+      return data;
+    } catch {
+      toast.warn('Unable to update user, please try later');
+    }
+    throw new Error();
+  }
+);
+
 

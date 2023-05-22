@@ -1,3 +1,4 @@
+import { Gym } from '../types/gym.interface';
 import { Training } from '../types/training.interface';
 
 export enum NameSpace {
@@ -13,6 +14,13 @@ export type TrainingData = {
   trainings: Training[];
   isTrainingsDataLoading: boolean;
   trainingsHasError: boolean;
+  filteredTrainings: Training[];
+};
+
+export type GymsData = {
+  gyms: Gym[];
+  isGymsDataLoading: boolean;
+  gymsHasError: boolean;
 };
 
 export type SelectLocationOptionProcess = {

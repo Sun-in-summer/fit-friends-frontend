@@ -9,3 +9,4 @@ export enum TrainingLevelEn {
   Amateur= 'Amateur',
   Pro = 'Pro',
 }
+

@@ -1,7 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/selector';
 
-function MyPurchasesScreen(): JSX.Element {
+function MyOrdersScreen(): JSX.Element {
+
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -41,7 +46,7 @@ function MyPurchasesScreen(): JSX.Element {
                     <div className="thumbnail-training__inner">
                       <div className="thumbnail-training__image">
                         <picture>
-                          <source type="image/webp" srcSet="img/content/thumbnails/training-01.webp, img/content/thumbnails/training-01@2x.webp 2x"/><img src="img/content/thumbnails/training-01.jpg" srcSet="img/content/thumbnails/training-01@2x.jpg 2x" width="330" height="190" alt=""/>
+                          <source type="image/webp" srcSet="img/content/thumbnails/training-01.webp, img/content/thumbnails/training-01@2x.webp 2x" /><img src="img/content/thumbnails/training-01.jpg" srcSet="img/content/thumbnails/training-01@2x.jpg 2x" width="330" height="190" alt="" />
                         </picture>
                       </div>
                       <p className="thumbnail-training__price"><span className="thumbnail-training__price-value">800</span><span>₽</span>
@@ -94,7 +99,7 @@ function MyPurchasesScreen(): JSX.Element {
                     <div className="thumbnail-training__inner">
                       <div className="thumbnail-training__image">
                         <picture>
-                          <source type="image/webp" srcSet="img/content/thumbnails/training-03.webp, img/content/thumbnails/training-03@2x.webp 2x"/><img src="img/content/thumbnails/training-03.jpg" srcSet="img/content/thumbnails/training-03@2x.jpg 2x" width="330" height="190" alt=""/>
+                          <source type="image/webp" srcSet="img/content/thumbnails/training-03.webp, img/content/thumbnails/training-03@2x.webp 2x" /><img src="img/content/thumbnails/training-03.jpg" srcSet="img/content/thumbnails/training-03@2x.jpg 2x" width="330" height="190" alt="" />
                         </picture>
                       </div>
                       <p className="thumbnail-training__price"><span className="thumbnail-training__price-value">1000</span><span>₽</span>
@@ -147,7 +152,7 @@ function MyPurchasesScreen(): JSX.Element {
                     <div className="thumbnail-training__inner">
                       <div className="thumbnail-training__image">
                         <picture>
-                          <source type="image/webp" srcSet="img/content/thumbnails/training-05.webp, img/content/thumbnails/training-05@2x.webp 2x"/><img src="img/content/thumbnails/training-05.jpg" srcSet="img/content/thumbnails/training-05@2x.jpg 2x" width="330" height="190" alt=""/>
+                          <source type="image/webp" srcSet="img/content/thumbnails/training-05.webp, img/content/thumbnails/training-05@2x.webp 2x" /><img src="img/content/thumbnails/training-05.jpg" srcSet="img/content/thumbnails/training-05@2x.jpg 2x" width="330" height="190" alt="" />
                         </picture>
                       </div>
                       <p className="thumbnail-training__price"><span className="thumbnail-training__price-value">1400</span><span>₽</span>
@@ -200,7 +205,7 @@ function MyPurchasesScreen(): JSX.Element {
                     <div className="thumbnail-training__inner">
                       <div className="thumbnail-training__image">
                         <picture>
-                          <source type="image/webp" srcSet="img/content/thumbnails/training-04.webp, img/content/thumbnails/training-04@2x.webp 2x"/><img src="img/content/thumbnails/training-04.jpg" srcSet="img/content/thumbnails/training-04@2x.jpg 2x" width="330" height="190" alt=""/>
+                          <source type="image/webp" srcSet="img/content/thumbnails/training-04.webp, img/content/thumbnails/training-04@2x.webp 2x" /><img src="img/content/thumbnails/training-04.jpg" srcSet="img/content/thumbnails/training-04@2x.jpg 2x" width="330" height="190" alt="" />
                         </picture>
                       </div>
                       <p className="thumbnail-training__price"><span className="thumbnail-training__price-value">1200</span><span>₽</span>
@@ -262,4 +267,4 @@ function MyPurchasesScreen(): JSX.Element {
   );
 }
 
-export default MyPurchasesScreen;
+export default MyOrdersScreen;

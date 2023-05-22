@@ -15,6 +15,11 @@ export type UserProcess = {
   basicUserInfo: BasicUserInfo | null;
   isUserRegistering: boolean;
   isQuestionnaireSending: boolean;
+  isQuestionnaireSent: boolean;
+  isUserUpdating: boolean;
+  isCompanyUsersLoading: boolean;
+  isCompanyUsersLoadingError: boolean;
+  usersForCompany: ExtendedUser[];
 };
 
 export type State = ReturnType<typeof store.getState>;

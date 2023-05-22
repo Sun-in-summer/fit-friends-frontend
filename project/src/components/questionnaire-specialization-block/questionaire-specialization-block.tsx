@@ -24,7 +24,7 @@ function QuestionnaireSpecializationBlock({ onChange, trainingTypes }: Questionn
 
           typesEn.map((type) => {
             const typeRu = translateEnToRu(type);
-            const isChecked = trainingTypes.includes(type);
+            const isChecked = trainingTypes.includes(typeRu);
             return (
               <div
                 className="btn-checkbox"
@@ -35,7 +35,7 @@ function QuestionnaireSpecializationBlock({ onChange, trainingTypes }: Questionn
                     className="visually-hidden"
                     type="checkbox"
                     name="specialisation"
-                    value={type}
+                    value={typeRu}
                     checked={isChecked}
                     onChange={onChange}
                   />

@@ -1,24 +1,27 @@
-import { Route, Routes } from "react-router-dom";
-import { AppRoute } from "../../const";
-import IntroScreen from "../../pages/intro-screen/intro-screen";
-import SignInScreen from "../../pages/sign-in-screen/sing-in-screen";
-import SignUpScreen from "../../pages/sign-up-screen/sign-up-screen";
-import TrainingCatalogueScreen from "../../pages/training-catalogue-screen/training-catalogue-screen";
-import NotFoundScreen from "../../pages/not-found-screen/not-found-screen";
-import IndexScreen from "../../pages/index-screen/index-screen";
-import PrivateRoute from "../private-route/private-route";
-import { HelmetProvider } from "react-helmet-async";
-import { Training } from "../../types/training.interface";
-import { ExtendedUser } from "../../types/user.interface";
-import { Review } from "../../types/review.interface";
-import { Gym } from "../../types/gym.interface";
-import HistoryRouter from "../history-route/history-route";
-import browserHistory from "../../browser-history";
-import { useAppSelector } from "../../hooks";
-import { getAuthorizationStatus } from "../../store/user-process/selector";
-import PersonalAccountCoachScreen from "../../pages/my-trainings-screen/my-trainings-screen";
-import QuestionnaireScreen from "../../pages/questionnaire-screen/questionnaire-screen";
-// import { ChangeEvent, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import IntroScreen from '../../pages/intro-screen/intro-screen';
+import SignInScreen from '../../pages/sign-in-screen/sing-in-screen';
+import SignUpScreen from '../../pages/sign-up-screen/sign-up-screen';
+import TrainingCatalogueScreen from '../../pages/training-catalogue-screen/training-catalogue-screen';
+import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
+import IndexScreen from '../../pages/index-screen/index-screen';
+import PrivateRoute from '../private-route/private-route';
+import { HelmetProvider } from 'react-helmet-async';
+import { Training } from '../../types/training.interface';
+import { ExtendedUser } from '../../types/user.interface';
+import { Review } from '../../types/review.interface';
+import { Gym } from '../../types/gym.interface';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
+import QuestionnaireScreen from '../../pages/questionnaire-screen/questionnaire-screen';
+import PersonalAccountCoachScreen from '../../pages/personal-account-coach-screen/personal-account-coach-screen';
+import MyTrainingsScreen from '../../pages/my-trainings-screen/my-trainings-screen';
+import MyOrdersScreen from '../../pages/my-orders-screen/my-orders-screen';
+import FriendsListScreen from '../../pages/friends-list-screen/friends-list-screen';
+import CreateTrainingScreen from '../../pages/create-training-screen/create-training-screen';
+import UsersCatalogueScreen from '../../pages/users-catalogue-screen/users-catalogue-screen';
+
 
 type AppScreenProps = {
   popularTrainingsQty: number;
@@ -51,11 +54,8 @@ function App({
   gyms,
   reviews,
 }: AppScreenProps): JSX.Element {
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  // const isTrainingsDataLoading = useAppSelector((state) => state.isTrainingsDataLoading);
-
-  // if(authorizationStatus === AuthorizationStatus.Unknown ||)
+  // const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HelmetProvider>
@@ -75,7 +75,7 @@ function App({
           <Route
             path={AppRoute.Main}
             element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute >
                 <IndexScreen
                   popularTrainingsQty={popularTrainingsQty}
                   lookForCompanyUsersQty={lookForCompanyUsersQty}
@@ -87,19 +87,62 @@ function App({
           <Route
             path={AppRoute.CoachProfile}
             element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute >
                 <PersonalAccountCoachScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.CoachTrainings}
+            element={
+              <PrivateRoute >
+                <MyTrainingsScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.CoachOrders}
+            element={
+              <PrivateRoute >
+                <MyOrdersScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.MyFriends}
+            element={
+              <PrivateRoute >
+                <FriendsListScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.CreateTraining}
+            element={
+              <PrivateRoute >
+                <CreateTrainingScreen />
               </PrivateRoute>
             }
           />
           <Route
             path={AppRoute.TrainingsCatalogue}
             element={
-              <TrainingCatalogueScreen
-                trainingCatalogueTrainingsQty={trainingCatalogueTrainingsQty}
-              />
+              <PrivateRoute >
+                <TrainingCatalogueScreen
+                  trainingCatalogueTrainingsQty={trainingCatalogueTrainingsQty}
+                />
+              </PrivateRoute>
             }
           />
+          <Route
+            path={AppRoute.UsersCatalogue}
+            element={
+              <PrivateRoute >
+                <UsersCatalogueScreen />
+              </PrivateRoute>
+            }
+          />
+
           <Route path="*" element={<NotFoundScreen />} />
         </Routes>
       </HistoryRouter>

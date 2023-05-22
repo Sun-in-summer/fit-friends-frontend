@@ -14,11 +14,11 @@ function PersonalAccountUserScreen(): JSX.Element {
                 <div className="user-info__header">
                   <div className="input-load-avatar">
                     <label>
-                      <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg"/><span className="input-load-avatar__avatar"><img src="img/content/user-photo-1.png" srcSet="img/content/user-photo-1@2x.png 2x" width="98" height="98" alt="user"/></span>
+                      <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" /><span className="input-load-avatar__avatar"><img src="img/content/user-photo-1.png" srcSet="img/content/user-photo-1@2x.png 2x" width="98" height="98" alt="user" /></span>
                     </label>
                   </div>
                 </div>
-                <UserDetailedInfo role ='user' />
+                <UserDetailedInfo />
               </section>
               <div className="inner-page__content">
                 <div className="personal-account-user">
@@ -27,12 +27,12 @@ function PersonalAccountUserScreen(): JSX.Element {
                       <div className="personal-account-user__form">
                         <div className="personal-account-user__input">
                           <label><span className="personal-account-user__label">План на день, ккал</span>
-                            <input type="text" name="schedule-for-the-day" value="3 300"/>
+                            <input type="text" name="schedule-for-the-day" value="3 300" />
                           </label>
                         </div>
                         <div className="personal-account-user__input">
                           <label><span className="personal-account-user__label">План на неделю, ккал</span>
-                            <input type="text" name="schedule-for-the-week" value="23 100"/>
+                            <input type="text" name="schedule-for-the-week" value="23 100" />
                           </label>
                         </div>
                       </div>
