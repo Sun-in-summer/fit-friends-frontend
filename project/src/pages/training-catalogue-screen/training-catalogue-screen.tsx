@@ -27,7 +27,7 @@ function TrainingCatalogueScreen({ trainingCatalogueTrainingsQty }: TrainingCata
     }
   }, [dispatch, trainings]);
 
-  const filteredTrainings = useAppSelector(getFilteredTrainings);
+  let filteredTrainings = useAppSelector(getFilteredTrainings);
 
   const [page, setPage] = useState(DEFAULT_PAGE);
   const pagesCount = Math.ceil(filteredTrainings.length / MAX_TRAININGS_QTY_PER_PAGE);
@@ -50,6 +50,10 @@ function TrainingCatalogueScreen({ trainingCatalogueTrainingsQty }: TrainingCata
     return (
       <div>Loading...</div>
     );
+  }
+
+  if (filteredTrainings === undefined || filteredTrainings.length === 0) {
+    filteredTrainings = trainings;
   }
 
 
@@ -82,7 +86,7 @@ function TrainingCatalogueScreen({ trainingCatalogueTrainingsQty }: TrainingCata
               </div>
               <div className="training-catalog">
                 <ul className="training-catalog__list">
-                  {trainings.map((item) => <TrainingCard key={item.id} item={item} />)}
+                  {filteredTrainings.map((item) => <TrainingCard key={item.id} item={item} />)}
                 </ul>
                 <div className="show-more training-catalog__show-more">
                   {

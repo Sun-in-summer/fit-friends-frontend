@@ -1,11 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { useAppSelector } from '../../hooks';
-import { getAuthorizationStatus } from '../../store/user-process/selector';
 
 function MyOrdersScreen(): JSX.Element {
 
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <div className="wrapper">

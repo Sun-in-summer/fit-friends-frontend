@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { ExtendedUser } from '../../types/user.interface';
-import { AppRoute } from '../../const';
+import { AppRoute, UserRole } from '../../const';
 
 type UserCardProps = {
   topstatus: boolean;
@@ -10,9 +10,16 @@ type UserCardProps = {
 
 function UserCard({ item, topstatus, screen }: UserCardProps): JSX.Element {
   const id = item.id as string;
+  let role = item.role;
+  if (role === UserRole.Coach) {
+    role = 'coach';
+  }
+  else {
+    role = 'user';
+  }
   return (
     <li className={`${screen}__item`}>
-      <div className={`thumbnail-user thumbnail-user--role-${item.role} thumbnail-user--dark`}>
+      <div className={`thumbnail-user thumbnail-user--role-${role} ${item.role === UserRole.Coach ? 'thumbnail-user--dark' : ''}`}>
         <div className="thumbnail-user__image">
           <picture>
             <source type="image/webp" srcSet="img/content/thumbnails/user-04.webp, img/content/thumbnails/user-04@2x.webp 2x" /><img src="img/content/thumbnails/user-04.jpg" srcSet="img/content/thumbnails/user-04@2x.jpg 2x" width="82" height="82" alt="" />

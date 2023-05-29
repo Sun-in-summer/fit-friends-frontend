@@ -16,3 +16,6 @@ export const getQuestionnaireSendingResultStatus = (state: State): boolean => st
 
 export const getCompanyUsersLoadingErrorStatus = (state: State): boolean => state[NameSpace.User].isCompanyUsersLoadingError;
 export const getCompanyUsersLoadingStatus = (state: State): boolean => state[NameSpace.User].isCompanyUsersLoading;
+
+export const getUsersData = (state: State): ExtendedUser[] => state[NameSpace.User].usersForCompany;
+export const getFilteredUsersData = (state: State): ExtendedUser[] | undefined => state[NameSpace.User].filteredUsers;

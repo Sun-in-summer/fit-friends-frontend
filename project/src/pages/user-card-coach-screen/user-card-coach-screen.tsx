@@ -4,12 +4,12 @@ import { useAppSelector } from '../../hooks';
 import { getTrainingsData } from '../../store/training-data/selector';
 
 
-type UserCardCoachScreenProps = {
+type UserCardScreenProps = {
   userCardScreenTrainingsQty: number;
   role: string;
 }
 
-function UserCardCoachScreen({ userCardScreenTrainingsQty, role }: UserCardCoachScreenProps): JSX.Element {
+function UserCardScreen({ userCardScreenTrainingsQty, role }: UserCardScreenProps): JSX.Element {
 
   const trainings = useAppSelector(getTrainingsData); // заменить на тренировки именно этого тренера
 
@@ -185,4 +185,4 @@ function UserCardCoachScreen({ userCardScreenTrainingsQty, role }: UserCardCoach
   );
 }
 
-export default UserCardCoachScreen;
+export default UserCardScreen;

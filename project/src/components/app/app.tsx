@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, UserRole } from '../../const';
 import IntroScreen from '../../pages/intro-screen/intro-screen';
 import SignInScreen from '../../pages/sign-in-screen/sing-in-screen';
 import SignUpScreen from '../../pages/sign-up-screen/sign-up-screen';
@@ -21,6 +21,8 @@ import MyOrdersScreen from '../../pages/my-orders-screen/my-orders-screen';
 import FriendsListScreen from '../../pages/friends-list-screen/friends-list-screen';
 import CreateTrainingScreen from '../../pages/create-training-screen/create-training-screen';
 import UsersCatalogueScreen from '../../pages/users-catalogue-screen/users-catalogue-screen';
+import TrainingCardScreen from '../../pages/training-card-screen/training-card-screen';
+import UserCardScreen from '../../pages/user-card-coach-screen/user-card-coach-screen';
 
 
 type AppScreenProps = {
@@ -139,6 +141,22 @@ function App({
             element={
               <PrivateRoute >
                 <UsersCatalogueScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.Training}
+            element={
+              <PrivateRoute >
+                <TrainingCardScreen trainingsScreenReviewsQty={5} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.User}
+            element={
+              <PrivateRoute >
+                <UserCardScreen userCardScreenTrainingsQty={5} role={UserRole.Coach} />
               </PrivateRoute>
             }
           />

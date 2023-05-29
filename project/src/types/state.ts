@@ -20,6 +20,9 @@ export type UserProcess = {
   isCompanyUsersLoading: boolean;
   isCompanyUsersLoadingError: boolean;
   usersForCompany: ExtendedUser[];
+  isFilteredUsersDataLoading : boolean;
+  filteredUsersHasError : boolean;
+  filteredUsers: ExtendedUser[];
 };
 
 export type State = ReturnType<typeof store.getState>;

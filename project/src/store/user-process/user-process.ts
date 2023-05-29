@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, UserRole, } from '../../const';
 import { UserProcess } from '../../types/state';
-import { checkAuthAction, fetchManyUsersAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction, updateUserAction } from '../api-actions';
+import { checkAuthAction, fetchFilteredUsersAction, fetchManyUsersAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction, updateUserAction } from '../api-actions';
 import { NameSpace } from '../store-const';
 import { setUserBasicInfo } from '../action';
 
@@ -22,6 +22,9 @@ const initialState: UserProcess = {
   isCompanyUsersLoading: false,
   isCompanyUsersLoadingError: false,
   usersForCompany: [],
+  isFilteredUsersDataLoading : false,
+  filteredUsersHasError : false,
+  filteredUsers: []
 
 
 };
@@ -119,6 +122,17 @@ export const userProcess = createSlice({
       .addCase(fetchManyUsersAction.rejected, (state, action)=>{
         state.isCompanyUsersLoading = false;
         state.isCompanyUsersLoadingError = true;
+      })
+      .addCase(fetchFilteredUsersAction.pending, (state) => {
+        state.isFilteredUsersDataLoading = true;
+      })
+      .addCase(fetchFilteredUsersAction.fulfilled, (state, action) => {
+        state.filteredUsers = action.payload;
+        state.isFilteredUsersDataLoading = false;
+      })
+      .addCase(fetchFilteredUsersAction.rejected, (state) => {
+        state.isFilteredUsersDataLoading = false;
+        state.filteredUsersHasError = true;
       });
   }
 });

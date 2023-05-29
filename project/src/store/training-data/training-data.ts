@@ -1,13 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import { NameSpace, TrainingData } from '../store-const';
-import { fetchFilteredTrainingsAction, fetchTrainingsAction } from '../api-actions';
+import { fetchCoachTrainingsAction, fetchFilteredCoachTrainingsAction, fetchFilteredTrainingsAction, fetchSelectedTrainingAction, fetchTrainingsAction } from '../api-actions';
 
 const initialState: TrainingData = {
   trainings: [],
   isTrainingsDataLoading: false,
   trainingsHasError: false,
   filteredTrainings: [],
+  selectedTraining: undefined,
+  isSelectedTrainingLoading: false,
+  isSelectedTrainingErrorLoading: false,
+  coachTrainings: [],
+  filteredCoachTrainings: undefined,
+  isCoachTrainingsDataLoading:  false,
+  coachTrainingsHasError: false,
+  isFilteredCoachTrainingsDataLoading: false,
+  filteredCoachTrainingsHasError: false,
+
 };
 
 export const trainingData = createSlice({
@@ -28,8 +38,41 @@ export const trainingData = createSlice({
         state.trainingsHasError = true;
       })
       .addCase(fetchFilteredTrainingsAction.fulfilled, (state, action) => {
-        state.filteredTrainings = action.payload[0];
-        state.trainings = action.payload[1];
+        state.filteredTrainings = action.payload;
+      })
+      .addCase(fetchSelectedTrainingAction.pending, (state)=> {
+        state.isSelectedTrainingLoading = true;
+        state.isSelectedTrainingErrorLoading = false;
+      })
+      .addCase(fetchSelectedTrainingAction.fulfilled, (state, action)=> {
+        state.selectedTraining = action.payload;
+        state.isSelectedTrainingLoading = false;
+      })
+      .addCase(fetchSelectedTrainingAction.rejected, (state, )=> {
+        state.isSelectedTrainingLoading = false;
+        state.isSelectedTrainingErrorLoading = true;
+      })
+      .addCase(fetchCoachTrainingsAction.pending, (state) => {
+        state.isCoachTrainingsDataLoading = true;
+      })
+      .addCase(fetchCoachTrainingsAction.fulfilled, (state, action) => {
+        state.coachTrainings = action.payload;
+        state.isCoachTrainingsDataLoading = false;
+      })
+      .addCase(fetchCoachTrainingsAction.rejected, (state) => {
+        state.isCoachTrainingsDataLoading = false;
+        state.coachTrainingsHasError = true;
+      })
+      .addCase(fetchFilteredCoachTrainingsAction.pending, (state) => {
+        state.isFilteredCoachTrainingsDataLoading = true;
+      })
+      .addCase(fetchFilteredCoachTrainingsAction.fulfilled, (state, action) => {
+        state.filteredCoachTrainings = action.payload;
+        state.isFilteredCoachTrainingsDataLoading = false;
+      })
+      .addCase(fetchFilteredCoachTrainingsAction.rejected, (state) => {
+        state.isFilteredCoachTrainingsDataLoading = false;
+        state.filteredCoachTrainingsHasError = true;
       });
   }
 });

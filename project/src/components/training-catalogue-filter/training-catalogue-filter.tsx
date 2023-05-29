@@ -1,13 +1,15 @@
 
 import { getTrainingsData } from '../../store/training-data/selector';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { FILTER_QUERY_DELAY, SortOptions, SortOptionsEn, TrainingCaloriesQty, TrainingPrice } from '../../const';
+import { FILTER_QUERY_DELAY, SortOptions, SortOptionsEn, TrainingCaloriesQty, TrainingPrice, TrainingRating } from '../../const';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { TrainingType } from '../../types/training-type.enum';
 import { fetchFilteredTrainingsAction } from '../../store/api-actions';
 import { debounce } from '../../utils/utils';
 import FilterSortBlock from '../filter-sort-block/filter-sort-block';
 import FilterSpecializationBlock from '../filter-specialization-block/filter-specialization-block';
+import RangeSlider from '../range-slider/range-slider';
+
 
 function TrainingCatalogueFilter(): JSX.Element {
 
@@ -54,7 +56,7 @@ function TrainingCatalogueFilter(): JSX.Element {
   const setPriceFilterDebounced = debounce<number[]>((arg) => setPriceFilter(arg), FILTER_QUERY_DELAY);
   const setCaloriesQtyFilterDebounced = debounce<number[]>((arg) => setCaloriesQtyFilter(arg), FILTER_QUERY_DELAY);
   const setTrainingTypeFilterDebounced = debounce<(prevState: TrainingType[]) => TrainingType[]>((arg) => setTrainingTypeFilter(arg), FILTER_QUERY_DELAY);
-  const setRaitingFilterDebounced = debounce<number[]>((arg) => setRatingFilter(arg), FILTER_QUERY_DELAY);
+  const setRatingFilterDebounced = debounce<number[]>((arg) => setRatingFilter(arg), FILTER_QUERY_DELAY);
 
 
   const handlePriceInputChange = (evt: FormEvent<HTMLInputElement>) => {
@@ -109,15 +111,18 @@ function TrainingCatalogueFilter(): JSX.Element {
         const indexToRemove = indexOfTypeToRemove - 1;
         const newTrainingTypes = trainingTypes.splice(indexToRemove, 1);
         setTrainingType([...newTrainingTypes]);
+        setTrainingTypeFilterDebounced((prevState) => [...prevState]);
       }
       else {
         trainingTypes.splice(indexOfTypeToRemove, 1);
         setTrainingType([...trainingTypes]);
+        setTrainingTypeFilterDebounced((prevState) => [...prevState]);
       }
     }
     else {
       trainingTypes.push(value);
       setTrainingType([...trainingTypes]);
+      setTrainingTypeFilterDebounced((prevState) => [...prevState]);
     }
   };
 
@@ -150,18 +155,6 @@ function TrainingCatalogueFilter(): JSX.Element {
             <label htmlFor="text-max">до</label>
           </div>
         </div>
-        {/* <div className="filter-range">
-          <div className="filter-range__scale">
-            <div className="filter-range__bar">
-              <span className="visually-hidden">Полоса прокрутки</span>
-            </div>
-          </div>
-
-          <div className="filter-range__control">
-            <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-            <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-          </div>
-        </div> */}
         <RangeSlider
           minRangeValue={minCurrentPrice}
           maxRangeValue={maxCurrentPrice}
@@ -194,36 +187,19 @@ function TrainingCatalogueFilter(): JSX.Element {
             <label htmlFor="text-max-cal">до</label>
           </div>
         </div>
-        {/* <div className="filter-range">
-          <div className="filter-range__scale">
-            <div className="filter-range__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-          </div>
-          <div className="filter-range__control">
-            <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-            <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-          </div>
-        </div> */}
         <RangeSlider
-          minRangeValue={minCurrentPrice}
-          maxRangeValue={maxCurrentPrice}
-          setExternalValues={[setPriceFilterDebounced, setPrice]}
+          minRangeValue={minCurrentCaloriesQty}
+          maxRangeValue={maxCurrentCaloriesQty}
+          setExternalValues={[setCaloriesQtyFilter, setCaloriesQty]}
         />
       </div>
       <div className="gym-catalog-form__block gym-catalog-form__block--rating">
         <h4 className="gym-catalog-form__block-title">Рейтинг</h4>
-        {/* <div className="filter-raiting">
-          <div className="filter-raiting__scale">
-            <div className="filter-raiting__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-          </div>
-          <div className="filter-raiting__control">
-            <button className="filter-raiting__min-toggle"><span className="visually-hidden">Минимальное значение</span></button><span>1</span>
-            <button className="filter-raiting__max-toggle"><span className="visually-hidden">Максимальное значение</span></button><span>5</span>
-          </div>
-        </div> */}
+
         <RangeSlider
-          minRangeValue={minCurrentPrice}
-          maxRangeValue={maxCurrentPrice}
-          setExternalValues={[setPriceFilterDebounced, setPrice]}
+          minRangeValue={TrainingRating.Min}
+          maxRangeValue={TrainingRating.Max}
+          setExternalValues={[setRatingFilterDebounced]}
         />
       </div>
       <FilterSpecializationBlock onChange={manyCheckboxesChangeHandle} trainingTypes={trainingTypes} />

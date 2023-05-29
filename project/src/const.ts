@@ -13,7 +13,14 @@ export const DEFAULT_DISCOUNT_SPECIAL_OFFER_TRAINING = 0.8;
 
 export const DEFAULT_PAGE = 1;
 export const MAX_TRAININGS_QTY_PER_PAGE = 12;
+export const MAX_USERS_QTY_PER_PAGE = 12;
 export const FILTER_QUERY_DELAY = 1500;
+
+export const RATING_VALUES = [1, 2, 3, 4, 5];
+export const DEFAULT_RATING = 5;
+
+export const DEFAULT_LOCATIONS_QTY_PER_PAGE = 5;
+export const DEFAULT_MAX_LOCATIONS_QTY = 30;
 
 export enum AppRoute {
   Test ='/test',
@@ -55,7 +62,8 @@ export enum APIRoute {
   RegisterBasic = '/register-basic',
   Questionnaire = '/questionnaire',
   UpdateUser = '/update/:id',
-  Gyms = '/gyms'
+  Gyms = '/gyms',
+  Orders = '/orders',
 
 }
 
@@ -75,6 +83,16 @@ export const enum UserRole {
 export const enum UserRoleEn {
   User = 'user',
   Coach = 'coach',
+}
+
+export enum UserRoles {
+  User = 'Пользователи',
+  Coach = 'Тренеры',
+}
+
+export enum UserRolesEn {
+  User = 'User',
+  Coach = 'Coach',
 }
 
 export const GenderNames = {
@@ -149,3 +167,15 @@ export const TrainingPrice = {
   Min: 0,
   Max: 100000000
 };
+
+
+export const TrainingRating = {
+  Min: 0,
+  Max: 5
+};
+
+export const ReviewTextLength = {
+  Min: 100,
+  Max: 1024
+};
+

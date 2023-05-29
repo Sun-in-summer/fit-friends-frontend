@@ -1,12 +1,6 @@
 import Header from '../../components/header/header';
-import { useAppSelector } from '../../hooks';
-import { getAuthorizationStatus } from '../../store/user-process/selector';
-
 
 function CreateTrainingScreen(): JSX.Element {
-
-
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
 
   return (

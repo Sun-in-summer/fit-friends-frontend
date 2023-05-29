@@ -9,5 +9,6 @@ export const redirectToRoute = createAction<AppRoute>('main/redirectToRoute');
 export const redirectBack = createAction('main/redirectBack');
 export const setUserId = createAction<string>('data/setUserId');
 export const setUserBasicInfo = createAction<BasicUserInfo>('user/setBasicUserInfo'); // удалить?
+export const setSelectedTrainingId = createAction<number | undefined>('main/setSelectedTrainingId');
 
 

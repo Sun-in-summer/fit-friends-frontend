@@ -12,12 +12,17 @@ import { redirectBack } from './action';
 import { Gym } from '../types/gym.interface';
 import { getQueryString } from '../utils/utils';
 import { TrainingQuery } from '../types/query/training-query';
+import { Review } from '../types/review.interface';
+import { Order } from '../types/order.interface';
+import { UsersQuery } from '../types/query/users-query';
 
 
 const authServiceUrl = `${USER_SERVICE_BACKEND_URL}${APIRoute.Auth}`;
 const updateUserUrl = 'http://localhost:3332/api/auth/update/:id';
 const trainingsServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Trainings}`;
 const gymsServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Gyms}`;
+const reviewsServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Reviews}`;
+const ordersServiceUrl = `${TRAINING_SERVICE_BACKEND_URL}${APIRoute.Orders}`;
 
 export const fetchTrainingsAction = createAsyncThunk<Training[], undefined, {
   dispacth: AppDispatch;
@@ -32,7 +37,7 @@ export const fetchTrainingsAction = createAsyncThunk<Training[], undefined, {
 );
 
 
-export const fetchFilteredTrainingsAction = createAsyncThunk<Training[][], TrainingQuery | undefined, {
+export const fetchFilteredTrainingsAction = createAsyncThunk<Training[], TrainingQuery | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -41,8 +46,46 @@ export const fetchFilteredTrainingsAction = createAsyncThunk<Training[][], Train
   async (query, {dispatch, extra: api}) => {
     const queryString = getQueryString(query);
     const {data} = await api.get<Training[] >(`${trainingsServiceUrl}${queryString}`);
-    const allTrainings = await api.get<Training[]>(`${trainingsServiceUrl}/all`);
-    return [data, allTrainings.data];
+    return data;
+  },
+);
+
+
+export const fetchFilteredUsersAction = createAsyncThunk<ExtendedUser[], UsersQuery | undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFilteredUsersAction',
+  async (query, {dispatch, extra: api}) => {
+    const queryString = getQueryString(query);
+    const {data} = await api.get<ExtendedUser[] >(`${authServiceUrl}${queryString}`);
+    return data;
+  },
+);
+
+export const fetchCoachTrainingsAction = createAsyncThunk<Training[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchCoachTrainingsAction',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Training[]>(trainingsServiceUrl);
+    return data;
+  },
+);
+
+export const fetchFilteredCoachTrainingsAction = createAsyncThunk<Training[], TrainingQuery | undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFilteredСoachTrainingsAction',
+  async (query, {dispatch, extra: api}) => {
+    const queryString = getQueryString(query);
+    const {data} = await api.get<Training[] >(`${trainingsServiceUrl}${queryString}`);
+    return data;
   },
 );
 
@@ -265,4 +308,82 @@ export const updateUserAction = createAsyncThunk<ExtendedUser, ExtendedUser, {
   }
 );
 
+export const fetchSelectedTrainingAction = createAsyncThunk<Training, string, {
+  dispacth: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/fetchSelectedTraining',
+  async(id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Training>(`${trainingsServiceUrl}/${id}`);
+    return data;
+  });
+
+
+export const fetchReviewsAction = createAsyncThunk<Review[], string, {
+    dispacth: AppDispatch;
+    state: State ;
+    extra: AxiosInstance;
+  }>(
+    'data/fetchRevews',
+    async(id, {dispatch, extra: api}) => {
+      const {data} = await api.get<Review[]>(`${reviewsServiceUrl}/${id}`);
+      return data;
+    }
+  );
+
+export const buyTrainingAction = createAsyncThunk<Order, Order, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/buyTrainingAction',
+  async (order, {dispatch, extra: api}) => {
+    const {data} = await api.post<Order>(ordersServiceUrl, order);
+    return data;
+  },
+);
+
+
+export const fetchMyOrdersAction = createAsyncThunk<Order[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchMyOrdersAction',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Order[]>(ordersServiceUrl);
+    return data;
+  },
+);
+
+
+export const sendReviewAction = createAsyncThunk<Review, Review, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/createReviewAction',
+  async({
+    userId,
+    trainingId,
+    rating,
+    text,
+  } , {dispatch, extra: api}) => {
+    try {
+
+      const {data} = await api.post<Review>(reviewsServiceUrl, {
+        userId,
+        trainingId,
+        rating,
+        text,
+      } );
+      dispatch(fetchReviewsAction(data.trainingId.toString()));
+      return data;
+    } catch {
+      toast.warn('Unable to send review for the training, please try later');
+    }
+    throw new Error();
+  }
+);
 

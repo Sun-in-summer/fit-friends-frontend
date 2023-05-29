@@ -1,8 +1,10 @@
 import { AppRoute, NavItemsEn, UserRole, UserRoleEn } from '../const';
 import { TrainingQuery } from '../types/query/training-query';
+import { UsersQuery } from '../types/query/users-query';
 import { TrainingLevel, TrainingLevelEn } from '../types/training-level.enum';
 import { TrainingTime, TrainingTimeEn } from '../types/training-time.enum';
 import { TrainingType, TrainingTypeEn } from '../types/training-type.enum';
+import { ExtendedUser } from '../types/user.interface';
 
 export const validateSignInForm = (email: HTMLInputElement, password: HTMLInputElement) => {
   const validPassword = /^[a-zA-Z0-9]{6,12}/;
@@ -100,7 +102,7 @@ export const getNavRoute = (item: string, role: string | undefined): string => {
 };
 
 
-export const getQueryString = (queryArgs?: TrainingQuery) => {
+export const getQueryString = (queryArgs?: TrainingQuery & UsersQuery) => {
   if (!queryArgs) {return '';}
 
   const queryParams = [
@@ -115,6 +117,9 @@ export const getQueryString = (queryArgs?: TrainingQuery) => {
     `${queryArgs.sortOption ? `sortOrder=${queryArgs.sortOption}` : ''}`,
     `${queryArgs.page ? `page=${queryArgs.page}` : ''}`,
     `${queryArgs.limit ? `limit=${queryArgs.limit}` : ''}`,
+    // `${queryArgs.place ? `place=${queryArgs.place}` : ''}`,
+    `${queryArgs.role ? `role=${queryArgs.role}` : ''}`,
+    `${queryArgs.level ? `level=${queryArgs.level}` : ''}`,
   ];
 
   const isNotEmptyString = queryParams.filter((param) => param !== '').join('') !== '';
@@ -122,6 +127,14 @@ export const getQueryString = (queryArgs?: TrainingQuery) => {
   const queryString = isNotEmptyString ? `?${queryParams.filter((param) => param !== '').join('&')}` : '';
 
   return queryString;
+};
+
+export const getSortedUsers = ( users: ExtendedUser[], role: string): ExtendedUser[] => {
+  const usersCopy = users.slice();
+  const usersByRole = usersCopy.filter((user) => user.role === role);
+  const usersOfOtherRole = usersCopy.filter((user) => user.role !== role);
+  const finalUsers = usersByRole.concat(usersOfOtherRole);
+  return finalUsers;
 };
 
 
