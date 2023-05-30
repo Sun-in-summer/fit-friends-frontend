@@ -21,6 +21,8 @@ export const DEFAULT_RATING = 5;
 
 export const DEFAULT_LOCATIONS_QTY_PER_PAGE = 5;
 export const DEFAULT_MAX_LOCATIONS_QTY = 30;
+export const DEFAULT_USER_CARD_TRAININGS_QTY = 4;
+export const MAX_CERTIFICATES_PER_PAGE = 1;
 
 export enum AppRoute {
   Test ='/test',

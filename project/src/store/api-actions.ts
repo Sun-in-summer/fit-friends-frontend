@@ -387,3 +387,55 @@ export const sendReviewAction = createAsyncThunk<Review, Review, {
   }
 );
 
+
+export const fetchSelectedUserAction = createAsyncThunk<ExtendedUser, string,{
+  dispatch: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/fetchSelectedUserAction',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<ExtendedUser>(`${authServiceUrl}/${id}`);
+    return data;
+  },
+);
+
+export const addFriendAction = createAsyncThunk<ExtendedUser, string,{
+  dispatch: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/addFriendAction',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<ExtendedUser>(`${authServiceUrl}/addfriend/${id}`);
+    return data;
+  },
+);
+
+
+export const removeFriendAction = createAsyncThunk<ExtendedUser, string,{
+  dispatch: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/removeFriendAction',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<ExtendedUser>(`${authServiceUrl}/deletefriend/${id}`);
+    return data;
+  },
+);
+
+
+export const fetchMyFriendsAction = createAsyncThunk<ExtendedUser[], string,{
+  dispatch: AppDispatch;
+  state: State ;
+  extra: AxiosInstance;
+}>(
+  'data/fetchMyFriendsAction',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<ExtendedUser[]>(`${authServiceUrl}/friends/${id}`);
+    return data;
+  },
+);
+
+

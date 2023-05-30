@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, UserRole, } from '../../const';
 import { UserProcess } from '../../types/state';
-import { checkAuthAction, fetchFilteredUsersAction, fetchManyUsersAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction, updateUserAction } from '../api-actions';
+import { checkAuthAction, fetchFilteredUsersAction, fetchManyUsersAction, fetchSelectedUserAction, fetchUser, loginAction, registerUserAction, sendQuestionnaireAction, updateUserAction } from '../api-actions';
 import { NameSpace } from '../store-const';
 import { setUserBasicInfo } from '../action';
 
@@ -24,7 +24,10 @@ const initialState: UserProcess = {
   usersForCompany: [],
   isFilteredUsersDataLoading : false,
   filteredUsersHasError : false,
-  filteredUsers: []
+  filteredUsers: [],
+  isSelectedUserErrorLoading: false,
+  selectedUser: undefined,
+  isSelectedUserLoading: false,
 
 
 };
@@ -133,6 +136,18 @@ export const userProcess = createSlice({
       .addCase(fetchFilteredUsersAction.rejected, (state) => {
         state.isFilteredUsersDataLoading = false;
         state.filteredUsersHasError = true;
+      })
+      .addCase(fetchSelectedUserAction.pending, (state)=> {
+        state.isSelectedUserLoading = true;
+        state.isSelectedUserErrorLoading = false;
+      })
+      .addCase(fetchSelectedUserAction.fulfilled, (state, action)=> {
+        state.selectedUser = action.payload;
+        state.isSelectedUserLoading = false;
+      })
+      .addCase(fetchSelectedUserAction.rejected, (state, )=> {
+        state.isSelectedUserLoading = false;
+        state.isSelectedUserErrorLoading = true;
       });
   }
 });

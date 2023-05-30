@@ -17,10 +17,10 @@ function TrainingCard({ item }: TrainingCardProps): JSX.Element {
           <div className="thumbnail-training__image">
             <picture>
               <source type="image/webp"
-                srcSet="img/content/thumbnails/training-06.webp, img/content/thumbnails/training-06@2x.webp 2x"
+                srcSet="/img/content/thumbnails/training-06.webp, /img/content/thumbnails/training-06@2x.webp 2x"
               />
-              <img src="img/content/thumbnails/training-06.jpg"
-                srcSet="img/content/thumbnails/training-06@2x.jpg 2x" width="330" height="190" alt=""
+              <img src="/img/content/thumbnails/training-06.jpg"
+                srcSet="/img/content/thumbnails/training-06@2x.jpg 2x" width="330" height="190" alt=""
               />
             </picture>
           </div>

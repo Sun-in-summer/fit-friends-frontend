@@ -19,3 +19,6 @@ export const getCompanyUsersLoadingStatus = (state: State): boolean => state[Nam
 
 export const getUsersData = (state: State): ExtendedUser[] => state[NameSpace.User].usersForCompany;
 export const getFilteredUsersData = (state: State): ExtendedUser[] | undefined => state[NameSpace.User].filteredUsers;
+
+export const getSelectedUserErrorLoadingStatus = (state: State): boolean => state[NameSpace.User].isSelectedUserErrorLoading;
+export const getSelectedUserData = (state: State): ExtendedUser | undefined => state[NameSpace.User].selectedUser;

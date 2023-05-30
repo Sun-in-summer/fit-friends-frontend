@@ -22,7 +22,7 @@ import FriendsListScreen from '../../pages/friends-list-screen/friends-list-scre
 import CreateTrainingScreen from '../../pages/create-training-screen/create-training-screen';
 import UsersCatalogueScreen from '../../pages/users-catalogue-screen/users-catalogue-screen';
 import TrainingCardScreen from '../../pages/training-card-screen/training-card-screen';
-import UserCardScreen from '../../pages/user-card-coach-screen/user-card-coach-screen';
+import UserCardScreen from '../../pages/user-card-screen/user-card-screen';
 
 
 type AppScreenProps = {

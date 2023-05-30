@@ -23,6 +23,9 @@ export type UserProcess = {
   isFilteredUsersDataLoading : boolean;
   filteredUsersHasError : boolean;
   filteredUsers: ExtendedUser[];
+  isSelectedUserErrorLoading: boolean;
+  selectedUser: ExtendedUser | undefined;
+  isSelectedUserLoading: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;
